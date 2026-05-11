@@ -1,6 +1,6 @@
 # Multilingual RAG System
 
-Production-grade Retrieval-Augmented Generation system with dual embedding pipelines (OpenAI + Cohere), local Qdrant vector storage, semantic chunking, grounded citations, and evaluation metrics.
+Production-grade Retrieval-Augmented Generation system with dual embedding pipelines (OpenAI + Cohere)
 
 ---
 
