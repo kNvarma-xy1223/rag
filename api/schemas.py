@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
 
-# ── Existing schemas ──────────────────────────────────────────────────────────
+# ── Core schemas ──────────────────────────────────────────────────────────────
 
 class QueryRequest(BaseModel):
     query: str = Field(..., min_length=1)
@@ -17,19 +17,6 @@ class CompareRequest(BaseModel):
     query: str = Field(..., min_length=1)
     top_k: int = Field(5, ge=1, le=20)
     filters: Optional[Dict[str, Any]] = None
-
-
-class EvaluateRequest(BaseModel):
-    query: str = Field(..., min_length=1)
-    relevant_doc_ids: List[str]
-    embedding_model: str = Field("openai", pattern="^(openai|cohere)$")
-    k: int = Field(5, ge=1, le=20)
-
-
-class BenchmarkRequest(BaseModel):
-    benchmark_queries: List[Dict[str, Any]]
-    embedding_model: str = Field("openai", pattern="^(openai|cohere)$")
-    k: int = Field(5, ge=1, le=20)
 
 
 class ChatRequest(BaseModel):
@@ -51,9 +38,12 @@ class RagasEvaluateRequest(BaseModel):
 
     `ground_truth` is an optional reference answer (plain text, not doc IDs).
     When supplied, context_recall and context_precision are also computed.
+
+    Set embedding_model="both" to run evaluation with both OpenAI and Cohere
+    embeddings side-by-side and compare results.
     """
     query: str = Field(..., min_length=1)
-    embedding_model: str = Field("openai", pattern="^(openai|cohere)$")
+    embedding_model: str = Field("openai", pattern="^(openai|cohere|both)$")
     top_k: int = Field(5, ge=1, le=20)
     answer: Optional[str] = Field(
         None,

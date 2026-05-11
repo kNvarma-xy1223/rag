@@ -81,7 +81,7 @@ def _build_context(chunks: List[Dict[str, Any]]) -> tuple[str, List[Dict[str, An
     return "\n\n---\n\n".join(parts), citations
 
 
-# ── Non-streaming (kept for backwards-compat / benchmark) ─────────────────────
+# ── Non-streaming (kept for RAGAS evaluation / benchmark) ────────────────────
 
 async def generate_response(
     query: str,
@@ -110,8 +110,7 @@ async def generate_response(
         model=settings.openai_chat_model,
         instructions=SYSTEM_PROMPT,
         input=f"Context:\n{context}\n\nQuestion: {query}",
-        reasoning={"effort": "medium"},
-        max_output_tokens=2000,
+        max_output_tokens=1500,
     )
     gen_ms = round((time.perf_counter() - t0) * 1000, 2)
 
@@ -181,8 +180,7 @@ async def generate_chat_response(
         model=settings.openai_chat_model,
         instructions=CHAT_SYSTEM_PROMPT,
         input=input_text,
-        reasoning={"effort": "medium"},
-        max_output_tokens=2000,
+        max_output_tokens=1500,
     )
     gen_ms = round((time.perf_counter() - t0) * 1000, 2)
 
@@ -209,6 +207,9 @@ async def generate_chat_response(
 
 
 # ── Streaming versions ────────────────────────────────────────────────────────
+# IMPORTANT: These must be defined as `async def` functions that `yield` —
+# FastAPI StreamingResponse consumes the generator directly by calling the
+# function. Do NOT wrap with `await` in the route; pass the call expression.
 
 async def stream_generate_response(
     query: str,
@@ -221,7 +222,7 @@ async def stream_generate_response(
 
     Event sequence:
       1. {"type":"citations", "citations":[...], "retrieval_latency_ms": N}
-      2. {"type":"token", "content": "..."} × many
+      2. {"type":"token", "content": "..."} x many
       3. {"type":"done", "generation_latency_ms": N, "tokens_used": {...}}
       OR {"type":"error", "message":"..."}
     """
@@ -234,7 +235,7 @@ async def stream_generate_response(
 
     context, citations = _build_context(chunks)
 
-    # Send citations immediately so the UI can render source cards while tokens stream
+    # Send citations immediately so UI can render source cards while tokens stream
     yield _sse({
         "type": "citations",
         "citations": citations,
@@ -250,8 +251,7 @@ async def stream_generate_response(
             model=settings.openai_chat_model,
             instructions=SYSTEM_PROMPT,
             input=f"Context:\n{context}\n\nQuestion: {query}",
-            reasoning={"effort": "medium"},
-            max_output_tokens=2000,
+            max_output_tokens=1500,
             stream=True,
         )
 
@@ -336,8 +336,7 @@ async def stream_generate_chat_response(
             model=settings.openai_chat_model,
             instructions=CHAT_SYSTEM_PROMPT,
             input=input_text,
-            reasoning={"effort": "medium"},
-            max_output_tokens=2000,
+            max_output_tokens=1500,
             stream=True,
         )
 
