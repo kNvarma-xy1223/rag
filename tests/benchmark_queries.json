@@ -1,0 +1,74 @@
+[
+  {
+    "query": "What is the total revenue for Q2 2024?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_0", "corporate_report_en.pdf_1"],
+    "language": "en",
+    "category": "financial"
+  },
+  {
+    "query": "What is the gross margin percentage?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_2", "sales_data.csv_0"],
+    "language": "en",
+    "category": "financial"
+  },
+  {
+    "query": "How many active customers did the company have at quarter-end?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_3"],
+    "language": "en",
+    "category": "metrics"
+  },
+  {
+    "query": "What is the Annual Recurring Revenue (ARR)?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_3"],
+    "language": "en",
+    "category": "saas_metrics"
+  },
+  {
+    "query": "What is the revenue guidance for Q3 2024?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_5"],
+    "language": "en",
+    "category": "guidance"
+  },
+  {
+    "query": "¿Cuáles son los ingresos totales del Q2 2024?",
+    "relevant_doc_ids": ["informe_corporativo_es.pdf_0", "informe_corporativo_es.pdf_1"],
+    "language": "es",
+    "category": "financial"
+  },
+  {
+    "query": "¿Cuál es el margen EBITDA?",
+    "relevant_doc_ids": ["informe_corporativo_es.pdf_2"],
+    "language": "es",
+    "category": "financial"
+  },
+  {
+    "query": "¿Cuántos clientes activos tiene la empresa?",
+    "relevant_doc_ids": ["informe_corporativo_es.pdf_3"],
+    "language": "es",
+    "category": "metrics"
+  },
+  {
+    "query": "What are the research and development expenses?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_2"],
+    "language": "en",
+    "category": "costs"
+  },
+  {
+    "query": "What is the operating cash flow?",
+    "relevant_doc_ids": ["corporate_report_en.pdf_4"],
+    "language": "en",
+    "category": "cash_flow"
+  },
+  {
+    "query": "What is the average revenue per transaction?",
+    "relevant_doc_ids": ["sales_data.csv_0"],
+    "language": "en",
+    "category": "numerical"
+  },
+  {
+    "query": "What is the highest gross profit recorded in the sales data?",
+    "relevant_doc_ids": ["sales_data.csv_0"],
+    "language": "en",
+    "category": "numerical"
+  }
+]
