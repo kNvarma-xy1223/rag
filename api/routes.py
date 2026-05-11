@@ -8,16 +8,29 @@ from typing import Optional
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
-from api.schemas import BenchmarkRequest, ChatRequest, CompareRequest, EvaluateRequest, QueryRequest
+from api.schemas import (
+    BenchmarkRequest,
+    ChatRequest,
+    CompareRequest,
+    EvaluateRequest,
+    QueryRequest,
+    RagasBenchmarkRequest,
+    RagasEvaluateRequest,
+)
 from chunking.semantic_chunker import chunk_documents
 from config.settings import settings
 from evaluation.metrics import evaluate_query, run_benchmark
+from evaluation.ragas_evaluator import (
+    evaluate_with_ragas,
+    run_ragas_benchmark,
+    run_ragas_benchmark_compare,
+)
 from ingestion.csv_ingestor import ingest_csv
 from ingestion.pdf_ingestor import ingest_pdf
 from rag.generator import (
     _sse,
-    generate_chat_response,
     generate_response,
+    generate_chat_response,
     stream_generate_chat_response,
     stream_generate_response,
 )
@@ -114,6 +127,40 @@ _BENCHMARK_SAMPLE = [
      "language": "en", "category": "numerical"},
 ]
 
+# ── RAGAS benchmark sample (adds ground_truth for reference-based metrics) ────
+_RAGAS_BENCHMARK_SAMPLE = [
+    {
+        "query": "What is the total revenue for Q2 2024?",
+        "ground_truth": "The total revenue for Q2 2024 is reported in the corporate financial report.",
+        "language": "en",
+        "category": "financial",
+    },
+    {
+        "query": "What is the gross margin percentage?",
+        "ground_truth": "The gross margin percentage is derived from revenue minus cost of goods sold.",
+        "language": "en",
+        "category": "financial",
+    },
+    {
+        "query": "How many active customers did the company have at quarter-end?",
+        "ground_truth": "The number of active customers at quarter-end is stated in the metrics section.",
+        "language": "en",
+        "category": "metrics",
+    },
+    {
+        "query": "What is the Annual Recurring Revenue (ARR)?",
+        "ground_truth": "ARR is the annualised value of subscription revenue reported in the SaaS metrics section.",
+        "language": "en",
+        "category": "saas_metrics",
+    },
+    {
+        "query": "What is the revenue guidance for Q3 2024?",
+        "ground_truth": "Revenue guidance for Q3 2024 is provided in the forward-looking statements section.",
+        "language": "en",
+        "category": "guidance",
+    },
+]
+
 
 def _get_embedder(model: str):
     if model == "openai":
@@ -123,11 +170,17 @@ def _get_embedder(model: str):
     return CohereEmbedder()
 
 
-# ── Benchmark sample ──────────────────────────────────────────────────────────
+# ── Benchmark sample endpoints ────────────────────────────────────────────────
 
 @router.get("/api/benchmark-sample")
 async def get_benchmark_sample():
     return _BENCHMARK_SAMPLE
+
+
+@router.get("/api/ragas-benchmark-sample")
+async def get_ragas_benchmark_sample():
+    """Return a sample benchmark dataset formatted for RAGAS (includes ground_truth)."""
+    return _RAGAS_BENCHMARK_SAMPLE
 
 
 # ── Ingestion (SSE progress stream) ──────────────────────────────────────────
@@ -145,8 +198,6 @@ async def ingest_document(
       {"type":"done", "status":"success", "filename":"...", "chunks":N, "indexed":{...}, "percent":100}
       {"type":"error", "message":"..."}
     """
-    # Read the file into memory before starting the generator so FastAPI
-    # doesn't close the upload stream mid-generator.
     suffix = Path(file.filename).suffix.lower()
     filename = file.filename
     file_bytes = await file.read()
@@ -274,10 +325,11 @@ async def chat(req: ChatRequest):
     )
 
 
-# ── Evaluation ────────────────────────────────────────────────────────────────
+# ── Classical Evaluation (retrieval metrics) ──────────────────────────────────
 
 @router.post("/api/evaluate")
 async def evaluate(req: EvaluateRequest):
+    """Classical retrieval evaluation: Precision@K, Recall@K, MRR, NDCG@K."""
     return await evaluate_query(
         req.query, req.relevant_doc_ids, req.embedding_model, req.k
     )
@@ -285,15 +337,89 @@ async def evaluate(req: EvaluateRequest):
 
 @router.post("/api/benchmark")
 async def benchmark(req: BenchmarkRequest):
+    """Run the classical retrieval benchmark (Precision/Recall/MRR/NDCG)."""
     return await run_benchmark(req.benchmark_queries, req.embedding_model, req.k)
 
 
 @router.post("/api/benchmark-compare")
 async def benchmark_compare(req: BenchmarkRequest):
-    """Run the same benchmark on both OpenAI and Cohere and return side-by-side."""
+    """Run the classical benchmark on both OpenAI and Cohere side-by-side."""
     openai_result = await run_benchmark(req.benchmark_queries, "openai", req.k)
     cohere_result = await run_benchmark(req.benchmark_queries, "cohere", req.k)
     return {"openai": openai_result, "cohere": cohere_result}
+
+
+# ── RAGAS Evaluation ──────────────────────────────────────────────────────────
+
+@router.post("/api/ragas-evaluate")
+async def ragas_evaluate(req: RagasEvaluateRequest):
+    """
+    RAGAS evaluation for a single query.
+
+    If `answer` is not supplied in the request body, the full RAG pipeline
+    is executed first to generate one.
+
+    Metrics returned:
+      - faithfulness        (always)
+      - answer_relevancy    (always)
+      - context_recall      (only when ground_truth is provided)
+      - context_precision   (only when ground_truth is provided)
+    """
+    # If no answer provided, generate via RAG pipeline
+    if req.answer:
+        answer = req.answer
+        retrieval = await retrieve(req.query, req.embedding_model, req.top_k)
+        contexts = [r["text"] for r in retrieval["results"]]
+        retrieval_ms = retrieval["latency_ms"]
+        generation_ms = 0
+        tokens_used = None
+    else:
+        rag_result = await generate_response(
+            req.query, req.embedding_model, req.top_k
+        )
+        answer = rag_result["answer"]
+        contexts = [c["text"] for c in rag_result.get("chunks", [])]
+        retrieval_ms = rag_result["retrieval_latency_ms"]
+        generation_ms = rag_result["generation_latency_ms"]
+        tokens_used = rag_result.get("tokens_used")
+
+    if not contexts:
+        raise HTTPException(status_code=422, detail="No contexts retrieved — cannot evaluate.")
+
+    ragas_scores = await evaluate_with_ragas(
+        query=req.query,
+        answer=answer,
+        contexts=contexts,
+        ground_truth=req.ground_truth,
+    )
+
+    return {
+        **ragas_scores,
+        "answer_preview": answer[:300],
+        "num_contexts": len(contexts),
+        "retrieval_latency_ms": retrieval_ms,
+        "generation_latency_ms": generation_ms,
+        "tokens_used": tokens_used,
+        "embedding_model": req.embedding_model,
+        "framework": "ragas",
+    }
+
+
+@router.post("/api/ragas-benchmark")
+async def ragas_benchmark(req: RagasBenchmarkRequest):
+    """
+    Full RAGAS benchmark: runs the RAG pipeline for every query then
+    scores with RAGAS (faithfulness, answer_relevancy, optionally
+    context_recall + context_precision when ground_truth is supplied).
+
+    Set embedding_model="both" to compare OpenAI and Cohere side-by-side.
+    """
+    if req.embedding_model == "both":
+        return await run_ragas_benchmark_compare(req.benchmark_queries, req.k)
+
+    return await run_ragas_benchmark(
+        req.benchmark_queries, req.embedding_model, req.k
+    )
 
 
 # ── Collections ───────────────────────────────────────────────────────────────

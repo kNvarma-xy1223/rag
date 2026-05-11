@@ -3,10 +3,10 @@ uvicorn[standard]>=0.27.0
 python-dotenv>=1.0.0
 pydantic-settings>=2.2.0
 
-# Vector DB – Pinecone (replaces qdrant-client)
+# Vector DB – Pinecone
 pinecone>=4.1.0
 
-# Embeddings & LLM – all via Azure AI OpenAI-compatible endpoint
+# Embeddings & LLM – Azure AI OpenAI-compatible endpoint
 openai>=1.23.0
 
 # Ingestion
@@ -17,6 +17,13 @@ pandas>=2.0.0
 numpy>=1.26.0
 sentence-transformers>=3.0.0
 scikit-learn>=1.4.0
+
+# ── RAGAS evaluation framework ────────────────────────────────────────────────
+# ragas uses LangChain under the hood for LLM + embedding judge calls.
+# langchain-openai provides AzureChatOpenAI and AzureOpenAIEmbeddings wrappers.
+ragas>=0.2.0
+langchain>=0.2.0
+langchain-openai>=0.1.0
 
 # Utilities
 aiofiles>=23.2.0
