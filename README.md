@@ -12,7 +12,6 @@ rag_system/
 ├── ingestion/       # PDF and CSV ingestors
 ├── chunking/        # Semantic chunker (sentence-transformers)
 ├── embeddings/      # OpenAI + Cohere embedding pipelines
-├── vectordb/        # Qdrant local manager
 ├── retrieval/       # Retrieval pipeline + model comparison
 ├── rag/             # Response generator with grounded citations
 ├── evaluation/      # Recall@K, Precision@K, MRR, NDCG@K, latency
@@ -42,11 +41,7 @@ cp .env.example .env
 
 **Required keys in `.env`:**
 
-| Variable | Description |
-|---|---|
-| `OPENAI_API_KEY` | OpenAI API key |
-| `COHERE_API_KEY` | Cohere API key |
-| `COHERE_BASE_URL` | Custom vjtesting endpoint URL |
+
 
 ### 3. Generate mock data
 
@@ -202,23 +197,4 @@ Range filters:
 
 ---
 
-## Qdrant — Local Storage
 
-No Docker required. Qdrant runs as a local embedded instance:
-
-```
-QDRANT_PATH=./qdrant_storage
-```
-
-Data persists across restarts. Two separate collections are maintained — one per embedding model.
-
----
-
-## Adding Docker / Azure Later
-
-The architecture is deployment-agnostic:
-
-- **Docker**: Wrap `main.py` in a Dockerfile; mount `qdrant_storage` as a volume or point `QDRANT_PATH` to a remote Qdrant instance by changing `QdrantClient(path=...)` to `QdrantClient(url=...)` in `vectordb/qdrant_manager.py`.
-- **Azure**: Deploy as Azure Container App; use Azure Key Vault for secrets; replace env-based config in `config/settings.py` with Azure App Configuration if needed.
-
-No application code changes are required.
