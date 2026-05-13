@@ -1,0 +1,251 @@
+employee_id,role,region,evaluation_date,revenue_usd,field_visits,customer_satisfaction,performance_score,target_achievement_pct,operational_cost_usd,evaluation_notes
+EMP-1001,Sales Manager,North,2024-08-27,67507.53,22,3.11,65.3,58.2,187760.26,Requires improvement in field coordination.
+EMP-1002,Field Manager,West,2023-08-14,72247.88,10,3.05,79.2,52.12,57721.04,Requires improvement in field coordination.
+EMP-1003,Field Manager,South,2023-08-09,462485.98,56,4.67,88.83,62.77,111427.46,Performance impacted by delayed field audits.
+EMP-1004,Field Manager,Central,2023-05-08,121547.19,29,2.74,92.2,98.3,203710.79,Exceeded quarterly sales and service expectations.
+EMP-1005,Field Manager,North,2024-11-08,105160.14,23,4.57,83.5,118.94,148564.51,Strong regional sales growth with operational efficiency.
+EMP-1006,Sales Manager,South,2024-01-15,591147.84,10,4.64,92.93,80.41,118818.47,Performance impacted by delayed field audits.
+EMP-1007,Field Manager,South,2023-06-17,196654.92,22,4.25,85.97,55.71,162394.79,Requires improvement in field coordination.
+EMP-1008,Field Manager,South,2023-02-02,315618.81,45,4.22,68.35,75.94,194395.26,Strong regional sales growth with operational efficiency.
+EMP-1009,Field Manager,West,2024-10-20,330815.35,9,3.03,95.83,120.11,85522.69,Exceeded quarterly sales and service expectations.
+EMP-1010,Field Manager,West,2024-01-06,150010.11,13,3.12,81.33,71.02,150300.64,Requires improvement in field coordination.
+EMP-1011,Sales Manager,West,2024-09-02,748128.04,13,3.77,63.45,53.77,36315.79,Field inspections improved customer retention rates.
+EMP-1012,Sales Manager,North,2024-11-29,319337.12,43,4.99,80.11,127.69,216587.13,Strong regional sales growth with operational efficiency.
+EMP-1013,Field Manager,Central,2023-07-02,588019.11,26,2.78,76.52,86.3,238915.82,Performance impacted by delayed field audits.
+EMP-1014,Sales Manager,Central,2024-06-27,659363.0,24,4.6,79.29,65.91,99739.32,Field inspections improved customer retention rates.
+EMP-1015,Sales Manager,South,2023-03-01,469261.21,36,2.55,95.31,120.3,209599.73,Performance impacted by delayed field audits.
+EMP-1016,Sales Manager,South,2024-11-06,664606.72,10,2.71,78.47,55.54,192544.52,Field inspections improved customer retention rates.
+EMP-1017,Field Manager,South,2024-12-31,712794.08,15,3.16,93.15,83.85,60831.57,Requires improvement in field coordination.
+EMP-1018,Field Manager,North,2023-12-13,329294.61,47,4.12,76.65,91.41,39041.01,Field inspections improved customer retention rates.
+EMP-1019,Sales Manager,North,2023-12-05,461816.1,19,3.97,60.27,106.63,24129.7,Strong regional sales growth with operational efficiency.
+EMP-1020,Sales Manager,Central,2024-04-29,409909.28,22,4.17,68.14,60.58,234523.42,Requires improvement in field coordination.
+EMP-1021,Sales Manager,West,2023-02-25,599233.6,56,3.52,63.58,102.72,95031.42,Exceeded quarterly sales and service expectations.
+EMP-1022,Sales Manager,South,2024-03-08,92428.87,51,3.35,92.74,69.89,55650.14,Exceeded quarterly sales and service expectations.
+EMP-1023,Sales Manager,North,2024-10-29,244981.6,20,4.69,62.86,114.64,215432.05,Strong regional sales growth with operational efficiency.
+EMP-1024,Sales Manager,North,2023-06-18,728297.38,53,4.62,66.32,88.85,61299.35,Exceeded quarterly sales and service expectations.
+EMP-1025,Field Manager,West,2023-06-08,51508.76,29,3.16,89.79,86.4,111521.8,Requires improvement in field coordination.
+EMP-1026,Sales Manager,West,2024-05-29,257695.48,8,3.95,80.6,109.84,23719.67,Requires improvement in field coordination.
+EMP-1027,Sales Manager,West,2023-05-03,89815.71,37,2.7,67.06,97.6,172051.01,Field inspections improved customer retention rates.
+EMP-1028,Sales Manager,South,2024-11-16,455243.34,7,4.05,75.93,96.69,135467.85,Performance impacted by delayed field audits.
+EMP-1029,Field Manager,North,2024-04-14,217080.17,30,2.83,84.53,86.58,232964.4,Strong regional sales growth with operational efficiency.
+EMP-1030,Sales Manager,East,2023-10-19,101282.5,18,3.76,65.03,77.92,26509.92,Field inspections improved customer retention rates.
+EMP-1031,Sales Manager,Central,2023-11-03,356729.2,39,4.26,83.24,128.98,166954.32,Strong regional sales growth with operational efficiency.
+EMP-1032,Sales Manager,Central,2023-08-04,707251.0,13,3.16,93.81,109.39,47307.5,Performance impacted by delayed field audits.
+EMP-1033,Field Manager,North,2024-10-11,192518.12,45,4.63,79.21,70.09,227958.17,Strong regional sales growth with operational efficiency.
+EMP-1034,Field Manager,Central,2024-12-23,630543.66,7,2.51,89.3,100.97,72869.26,Exceeded quarterly sales and service expectations.
+EMP-1035,Field Manager,Central,2024-07-19,442634.81,12,2.69,93.56,122.31,140941.67,Performance impacted by delayed field audits.
+EMP-1036,Sales Manager,South,2024-11-29,350850.7,7,3.27,94.16,113.69,216568.62,Performance impacted by delayed field audits.
+EMP-1037,Sales Manager,South,2023-06-16,516853.39,27,4.45,93.6,82.51,158958.76,Field inspections improved customer retention rates.
+EMP-1038,Sales Manager,East,2023-06-13,666991.34,6,2.95,95.13,112.59,108811.16,Field inspections improved customer retention rates.
+EMP-1039,Sales Manager,South,2023-08-17,317779.21,7,4.65,68.45,115.33,120472.78,Performance impacted by delayed field audits.
+EMP-1040,Sales Manager,West,2024-11-26,512023.23,30,3.32,92.85,127.35,76990.0,Requires improvement in field coordination.
+EMP-1041,Field Manager,North,2024-09-02,707466.0,12,4.69,69.93,96.45,246052.14,Strong regional sales growth with operational efficiency.
+EMP-1042,Field Manager,South,2023-09-18,291980.98,55,3.28,83.04,90.91,102446.9,Requires improvement in field coordination.
+EMP-1043,Sales Manager,East,2024-03-17,546149.7,5,3.8,90.65,104.95,235663.15,Field inspections improved customer retention rates.
+EMP-1044,Sales Manager,East,2024-11-13,714212.14,26,4.06,85.21,59.97,226011.24,Requires improvement in field coordination.
+EMP-1045,Field Manager,Central,2024-08-05,278328.03,49,3.24,64.84,83.64,235687.28,Field inspections improved customer retention rates.
+EMP-1046,Field Manager,West,2024-03-28,334252.62,58,2.5,70.9,84.39,149196.35,Performance impacted by delayed field audits.
+EMP-1047,Field Manager,East,2024-06-11,522939.06,37,3.68,94.24,113.68,50725.94,Strong regional sales growth with operational efficiency.
+EMP-1048,Field Manager,South,2024-05-01,115371.04,53,3.09,71.8,114.53,45364.95,Strong regional sales growth with operational efficiency.
+EMP-1049,Sales Manager,North,2023-04-20,368791.32,45,3.94,87.3,80.72,105916.69,Field inspections improved customer retention rates.
+EMP-1050,Field Manager,West,2023-05-17,203188.8,56,4.89,79.68,54.02,69807.59,Strong regional sales growth with operational efficiency.
+EMP-1051,Field Manager,West,2024-07-15,517304.41,40,3.99,96.1,121.31,157036.56,Requires improvement in field coordination.
+EMP-1052,Field Manager,Central,2024-05-11,678045.67,52,4.65,77.1,110.14,211567.09,Performance impacted by delayed field audits.
+EMP-1053,Sales Manager,South,2023-06-04,242218.21,9,4.28,68.91,76.87,224326.44,Strong regional sales growth with operational efficiency.
+EMP-1054,Sales Manager,North,2023-07-31,318124.7,14,4.27,62.44,82.61,140226.67,Exceeded quarterly sales and service expectations.
+EMP-1055,Field Manager,West,2023-01-07,322633.77,54,3.96,86.43,118.54,193742.7,Exceeded quarterly sales and service expectations.
+EMP-1056,Field Manager,Central,2023-08-14,259028.86,29,4.63,96.23,83.52,189403.76,Requires improvement in field coordination.
+EMP-1057,Field Manager,West,2023-05-11,203595.14,32,3.71,74.78,103.51,201554.16,Field inspections improved customer retention rates.
+EMP-1058,Sales Manager,South,2023-02-21,684850.2,42,3.91,61.03,101.42,42567.88,Exceeded quarterly sales and service expectations.
+EMP-1059,Field Manager,East,2023-03-25,315372.7,18,3.64,72.83,120.37,76781.59,Exceeded quarterly sales and service expectations.
+EMP-1060,Field Manager,North,2023-09-11,63568.3,39,2.63,96.17,67.94,26468.41,Strong regional sales growth with operational efficiency.
+EMP-1061,Sales Manager,West,2024-12-17,637460.19,44,2.88,64.8,103.56,145352.7,Field inspections improved customer retention rates.
+EMP-1062,Field Manager,East,2023-04-21,586828.67,15,4.01,96.62,107.47,196670.05,Field inspections improved customer retention rates.
+EMP-1063,Sales Manager,Central,2024-12-08,700221.02,41,4.19,96.41,81.73,181603.53,Strong regional sales growth with operational efficiency.
+EMP-1064,Sales Manager,North,2023-12-22,121330.91,54,3.25,86.0,114.44,201094.53,Requires improvement in field coordination.
+EMP-1065,Field Manager,West,2024-01-06,513064.94,9,3.76,72.97,117.97,207359.42,Strong regional sales growth with operational efficiency.
+EMP-1066,Field Manager,West,2024-04-21,545116.05,32,2.94,79.83,102.04,157818.96,Requires improvement in field coordination.
+EMP-1067,Field Manager,South,2024-04-20,628014.22,42,3.17,92.37,116.46,30799.1,Exceeded quarterly sales and service expectations.
+EMP-1068,Field Manager,East,2024-09-02,285477.63,36,4.63,66.91,66.97,201479.77,Performance impacted by delayed field audits.
+EMP-1069,Field Manager,West,2024-10-23,439053.72,38,4.87,63.25,107.61,127258.68,Field inspections improved customer retention rates.
+EMP-1070,Field Manager,East,2024-04-29,363722.18,6,2.73,68.42,105.34,83489.45,Requires improvement in field coordination.
+EMP-1071,Field Manager,North,2023-07-17,347852.67,52,3.88,73.37,86.3,83589.52,Field inspections improved customer retention rates.
+EMP-1072,Field Manager,Central,2024-06-21,133688.32,39,4.88,86.23,65.32,187265.12,Performance impacted by delayed field audits.
+EMP-1073,Field Manager,South,2023-10-08,736357.44,58,2.99,68.64,64.36,13395.61,Requires improvement in field coordination.
+EMP-1074,Sales Manager,North,2024-08-10,732006.45,40,3.23,95.88,101.03,190670.12,Strong regional sales growth with operational efficiency.
+EMP-1075,Field Manager,North,2024-02-15,378577.86,33,3.35,96.69,70.2,216813.51,Strong regional sales growth with operational efficiency.
+EMP-1076,Field Manager,South,2023-05-02,101857.52,45,4.22,65.77,114.89,237790.15,Strong regional sales growth with operational efficiency.
+EMP-1077,Field Manager,Central,2024-03-15,474422.36,55,4.05,89.48,80.43,228041.05,Performance impacted by delayed field audits.
+EMP-1078,Field Manager,East,2024-11-07,448040.63,8,4.02,88.12,125.81,59869.1,Field inspections improved customer retention rates.
+EMP-1079,Sales Manager,East,2023-02-03,159939.97,16,3.88,65.95,82.68,175449.07,Exceeded quarterly sales and service expectations.
+EMP-1080,Sales Manager,South,2024-03-11,251673.42,23,4.26,77.25,104.99,231738.65,Requires improvement in field coordination.
+EMP-1081,Sales Manager,Central,2024-08-05,431193.67,46,2.87,70.09,61.38,24313.13,Performance impacted by delayed field audits.
+EMP-1082,Field Manager,West,2023-03-24,357407.41,34,4.22,86.59,125.41,130113.32,Exceeded quarterly sales and service expectations.
+EMP-1083,Sales Manager,Central,2023-01-22,672596.02,52,3.31,69.51,57.31,240858.66,Requires improvement in field coordination.
+EMP-1084,Field Manager,Central,2024-03-22,453372.89,53,4.39,77.88,102.12,229857.47,Field inspections improved customer retention rates.
+EMP-1085,Field Manager,West,2024-12-11,728338.67,35,3.37,72.67,103.61,215855.94,Performance impacted by delayed field audits.
+EMP-1086,Field Manager,North,2024-02-18,251752.46,30,4.53,80.9,86.39,85484.12,Performance impacted by delayed field audits.
+EMP-1087,Sales Manager,West,2023-02-22,510362.27,39,3.65,62.06,91.48,159432.13,Exceeded quarterly sales and service expectations.
+EMP-1088,Sales Manager,South,2024-12-27,236939.37,13,4.82,76.65,105.86,39142.26,Requires improvement in field coordination.
+EMP-1089,Sales Manager,North,2024-10-25,267525.1,5,3.88,63.54,129.38,229103.17,Exceeded quarterly sales and service expectations.
+EMP-1090,Sales Manager,South,2024-04-12,398862.85,50,3.23,86.81,83.24,125799.9,Exceeded quarterly sales and service expectations.
+EMP-1091,Sales Manager,East,2024-06-03,318510.21,43,3.77,93.41,119.12,76299.38,Exceeded quarterly sales and service expectations.
+EMP-1092,Field Manager,West,2024-07-05,624384.63,23,4.32,91.82,96.39,168385.78,Field inspections improved customer retention rates.
+EMP-1093,Field Manager,Central,2024-01-28,291586.76,40,4.41,74.33,124.63,218704.4,Field inspections improved customer retention rates.
+EMP-1094,Sales Manager,South,2024-05-22,649209.08,31,2.61,88.3,106.42,204738.14,Exceeded quarterly sales and service expectations.
+EMP-1095,Sales Manager,North,2023-05-28,138372.39,42,3.33,63.81,117.6,33930.81,Exceeded quarterly sales and service expectations.
+EMP-1096,Field Manager,North,2023-12-03,659653.08,14,2.69,89.7,71.2,159582.26,Exceeded quarterly sales and service expectations.
+EMP-1097,Field Manager,South,2024-10-08,717897.71,45,4.3,88.86,119.79,18615.78,Strong regional sales growth with operational efficiency.
+EMP-1098,Field Manager,West,2023-06-20,748198.15,52,2.73,97.18,110.83,178933.8,Strong regional sales growth with operational efficiency.
+EMP-1099,Field Manager,Central,2024-02-26,682396.84,7,3.31,62.13,78.68,113364.83,Field inspections improved customer retention rates.
+EMP-1100,Sales Manager,South,2023-08-26,168988.55,10,4.02,74.54,104.65,129440.14,Requires improvement in field coordination.
+EMP-1101,Field Manager,South,2023-03-17,496533.24,34,3.14,60.36,114.37,226290.26,Requires improvement in field coordination.
+EMP-1102,Field Manager,South,2024-01-29,711664.94,42,3.25,96.56,105.23,119640.6,Performance impacted by delayed field audits.
+EMP-1103,Field Manager,East,2023-01-09,124657.29,29,3.93,81.84,129.42,80855.38,Exceeded quarterly sales and service expectations.
+EMP-1104,Sales Manager,East,2023-08-13,687431.87,52,3.74,94.36,72.9,201726.43,Requires improvement in field coordination.
+EMP-1105,Sales Manager,North,2023-11-13,484623.81,48,4.39,89.16,104.47,42827.02,Strong regional sales growth with operational efficiency.
+EMP-1106,Field Manager,South,2023-05-16,73355.17,28,4.33,63.43,73.61,189395.41,Field inspections improved customer retention rates.
+EMP-1107,Field Manager,East,2023-04-28,421596.66,22,4.58,69.76,115.98,125643.48,Performance impacted by delayed field audits.
+EMP-1108,Field Manager,Central,2024-01-10,724025.31,14,4.39,68.57,104.11,171857.5,Exceeded quarterly sales and service expectations.
+EMP-1109,Sales Manager,Central,2024-01-26,603477.38,5,3.16,64.7,79.49,189762.78,Performance impacted by delayed field audits.
+EMP-1110,Field Manager,South,2024-10-25,125842.27,19,3.68,83.54,125.45,88721.51,Requires improvement in field coordination.
+EMP-1111,Sales Manager,East,2024-05-19,494782.75,34,4.77,71.48,82.66,43546.48,Strong regional sales growth with operational efficiency.
+EMP-1112,Sales Manager,West,2024-08-24,118034.4,39,2.84,77.24,103.64,188353.63,Requires improvement in field coordination.
+EMP-1113,Sales Manager,East,2023-08-11,669789.65,46,2.75,78.6,82.65,238365.17,Strong regional sales growth with operational efficiency.
+EMP-1114,Field Manager,North,2024-02-12,361287.1,20,4.64,63.78,104.85,140671.81,Performance impacted by delayed field audits.
+EMP-1115,Field Manager,North,2023-02-21,182865.99,12,4.87,91.32,57.33,60905.4,Requires improvement in field coordination.
+EMP-1116,Field Manager,South,2023-08-27,220498.23,13,4.47,67.8,116.39,143009.87,Requires improvement in field coordination.
+EMP-1117,Field Manager,Central,2023-09-14,592058.0,55,4.75,60.11,118.67,44725.12,Field inspections improved customer retention rates.
+EMP-1118,Sales Manager,North,2023-06-28,126948.44,60,2.56,60.56,113.2,67103.59,Performance impacted by delayed field audits.
+EMP-1119,Field Manager,Central,2024-08-30,86679.31,52,3.55,64.32,55.08,117586.05,Performance impacted by delayed field audits.
+EMP-1120,Sales Manager,East,2024-04-14,366403.79,19,4.86,61.65,112.66,218075.42,Requires improvement in field coordination.
+EMP-1121,Sales Manager,North,2023-03-24,92577.79,35,4.62,76.2,58.64,180976.32,Exceeded quarterly sales and service expectations.
+EMP-1122,Field Manager,Central,2024-06-27,475808.2,9,2.82,83.72,96.83,180916.67,Exceeded quarterly sales and service expectations.
+EMP-1123,Field Manager,South,2024-03-16,367600.79,43,3.58,90.14,59.15,167131.11,Requires improvement in field coordination.
+EMP-1124,Field Manager,East,2024-11-12,671663.72,31,3.35,77.23,83.28,32820.6,Exceeded quarterly sales and service expectations.
+EMP-1125,Field Manager,North,2024-01-17,312010.72,14,4.22,78.02,57.3,30487.45,Exceeded quarterly sales and service expectations.
+EMP-1126,Sales Manager,North,2023-10-22,439459.51,42,4.89,81.34,103.6,108594.07,Exceeded quarterly sales and service expectations.
+EMP-1127,Field Manager,Central,2024-01-12,296152.33,41,3.77,65.88,88.58,213345.96,Performance impacted by delayed field audits.
+EMP-1128,Sales Manager,Central,2024-11-22,583823.94,41,3.07,76.31,94.88,194183.81,Requires improvement in field coordination.
+EMP-1129,Sales Manager,East,2023-12-26,476296.44,47,4.57,70.16,64.43,178647.71,Performance impacted by delayed field audits.
+EMP-1130,Sales Manager,North,2024-06-27,176983.89,14,3.92,75.23,61.35,161961.28,Strong regional sales growth with operational efficiency.
+EMP-1131,Sales Manager,Central,2023-03-28,313336.08,34,3.35,74.06,107.73,196440.55,Requires improvement in field coordination.
+EMP-1132,Sales Manager,Central,2024-03-28,158905.93,53,4.04,85.61,71.77,168865.29,Exceeded quarterly sales and service expectations.
+EMP-1133,Field Manager,West,2024-06-23,241216.79,53,3.78,73.12,58.87,172772.29,Requires improvement in field coordination.
+EMP-1134,Field Manager,East,2023-10-24,81792.15,30,4.96,62.08,66.35,236877.78,Field inspections improved customer retention rates.
+EMP-1135,Field Manager,Central,2024-11-15,133989.04,36,4.37,66.68,80.42,178881.1,Requires improvement in field coordination.
+EMP-1136,Field Manager,Central,2024-03-15,100452.85,60,4.36,76.58,86.78,28687.03,Performance impacted by delayed field audits.
+EMP-1137,Field Manager,West,2024-12-07,546649.27,31,3.22,75.39,127.3,51249.56,Requires improvement in field coordination.
+EMP-1138,Field Manager,East,2023-08-15,111690.92,59,2.76,76.56,82.04,28875.3,Performance impacted by delayed field audits.
+EMP-1139,Field Manager,East,2024-10-22,595382.51,9,3.78,64.33,90.8,227421.46,Performance impacted by delayed field audits.
+EMP-1140,Sales Manager,South,2024-10-05,215388.19,14,3.14,66.59,62.23,192196.57,Strong regional sales growth with operational efficiency.
+EMP-1141,Field Manager,East,2024-10-04,374767.15,41,4.4,77.06,123.93,145478.03,Requires improvement in field coordination.
+EMP-1142,Field Manager,Central,2023-03-17,155670.18,9,3.67,83.99,113.71,151940.74,Performance impacted by delayed field audits.
+EMP-1143,Field Manager,Central,2024-08-31,373219.74,7,2.64,91.6,56.14,217420.01,Strong regional sales growth with operational efficiency.
+EMP-1144,Field Manager,South,2023-11-26,373898.16,40,4.89,88.08,53.28,228171.99,Requires improvement in field coordination.
+EMP-1145,Field Manager,Central,2024-10-23,400957.11,8,3.63,90.82,116.99,245772.54,Strong regional sales growth with operational efficiency.
+EMP-1146,Sales Manager,East,2024-02-01,77399.49,50,3.59,76.7,91.82,48099.09,Performance impacted by delayed field audits.
+EMP-1147,Field Manager,Central,2024-11-25,592125.35,48,3.99,89.99,101.78,25818.85,Strong regional sales growth with operational efficiency.
+EMP-1148,Field Manager,Central,2024-11-10,248902.88,51,4.63,96.65,98.22,46089.6,Strong regional sales growth with operational efficiency.
+EMP-1149,Sales Manager,East,2024-07-26,691722.52,24,4.92,86.54,81.36,152809.89,Strong regional sales growth with operational efficiency.
+EMP-1150,Field Manager,North,2024-10-23,500445.28,26,4.53,85.46,116.32,187305.92,Requires improvement in field coordination.
+EMP-1151,Field Manager,South,2023-08-20,405941.94,6,3.41,66.85,67.14,237440.38,Exceeded quarterly sales and service expectations.
+EMP-1152,Sales Manager,North,2024-11-08,158461.62,23,4.61,63.84,111.67,210428.76,Requires improvement in field coordination.
+EMP-1153,Field Manager,South,2024-03-24,663474.94,44,2.83,74.32,62.98,209522.81,Requires improvement in field coordination.
+EMP-1154,Sales Manager,South,2024-06-30,337601.03,48,4.3,96.84,98.85,190573.88,Exceeded quarterly sales and service expectations.
+EMP-1155,Sales Manager,West,2024-04-17,266627.53,56,4.46,94.35,65.52,172793.64,Requires improvement in field coordination.
+EMP-1156,Field Manager,East,2023-02-23,594686.83,37,3.82,96.72,115.35,202302.21,Field inspections improved customer retention rates.
+EMP-1157,Field Manager,South,2023-10-07,661881.86,40,4.84,87.03,91.27,39922.67,Strong regional sales growth with operational efficiency.
+EMP-1158,Field Manager,North,2024-02-29,683714.35,14,4.58,63.49,122.84,206008.78,Performance impacted by delayed field audits.
+EMP-1159,Sales Manager,East,2023-05-30,327517.78,28,3.09,97.79,79.99,16765.01,Strong regional sales growth with operational efficiency.
+EMP-1160,Sales Manager,North,2023-03-23,76812.23,58,3.68,91.58,110.71,122586.43,Requires improvement in field coordination.
+EMP-1161,Sales Manager,South,2023-11-05,229146.75,58,2.87,95.73,98.71,111581.14,Performance impacted by delayed field audits.
+EMP-1162,Sales Manager,Central,2024-07-02,83424.61,31,4.1,83.67,55.02,210805.05,Exceeded quarterly sales and service expectations.
+EMP-1163,Sales Manager,Central,2024-03-02,492368.46,41,3.1,65.46,84.34,157554.3,Field inspections improved customer retention rates.
+EMP-1164,Sales Manager,Central,2023-01-21,515059.91,10,3.81,73.7,126.27,140579.67,Requires improvement in field coordination.
+EMP-1165,Field Manager,East,2023-09-04,661332.01,7,4.09,97.28,70.29,13898.14,Strong regional sales growth with operational efficiency.
+EMP-1166,Sales Manager,West,2024-12-13,590050.96,52,4.39,65.07,78.18,91251.34,Field inspections improved customer retention rates.
+EMP-1167,Field Manager,North,2023-07-24,492215.09,56,2.84,87.21,125.49,18876.11,Field inspections improved customer retention rates.
+EMP-1168,Sales Manager,East,2024-01-01,270917.07,24,3.79,97.59,93.44,70795.3,Field inspections improved customer retention rates.
+EMP-1169,Sales Manager,West,2023-12-14,656058.79,26,3.18,90.38,84.96,106005.23,Exceeded quarterly sales and service expectations.
+EMP-1170,Sales Manager,North,2024-03-16,397342.26,36,3.42,90.3,71.34,29826.76,Exceeded quarterly sales and service expectations.
+EMP-1171,Sales Manager,South,2024-12-07,431832.08,25,2.76,72.46,73.65,117019.78,Exceeded quarterly sales and service expectations.
+EMP-1172,Field Manager,North,2024-11-18,296082.89,7,4.32,94.64,99.19,114385.72,Strong regional sales growth with operational efficiency.
+EMP-1173,Field Manager,North,2023-05-10,304317.79,56,4.37,66.08,52.49,213680.63,Exceeded quarterly sales and service expectations.
+EMP-1174,Sales Manager,East,2024-01-16,215196.77,46,3.42,74.55,95.38,155222.76,Exceeded quarterly sales and service expectations.
+EMP-1175,Field Manager,North,2023-07-10,584159.13,41,2.84,73.94,75.15,76885.54,Strong regional sales growth with operational efficiency.
+EMP-1176,Field Manager,East,2024-12-11,412421.69,40,2.79,89.45,106.32,61496.9,Requires improvement in field coordination.
+EMP-1177,Field Manager,East,2024-11-14,190124.84,13,4.63,77.18,121.89,116826.69,Strong regional sales growth with operational efficiency.
+EMP-1178,Field Manager,East,2024-06-04,546678.34,40,3.86,93.87,118.11,180834.18,Field inspections improved customer retention rates.
+EMP-1179,Sales Manager,East,2024-04-23,134953.72,17,4.48,69.0,89.52,96615.17,Requires improvement in field coordination.
+EMP-1180,Sales Manager,West,2024-08-11,478363.85,10,2.66,75.13,107.35,124879.63,Exceeded quarterly sales and service expectations.
+EMP-1181,Sales Manager,Central,2023-07-06,137728.75,25,4.11,77.1,104.41,92683.55,Requires improvement in field coordination.
+EMP-1182,Sales Manager,South,2023-12-21,352832.8,60,2.64,64.72,62.24,49517.7,Performance impacted by delayed field audits.
+EMP-1183,Field Manager,Central,2023-04-06,642153.59,21,2.99,96.34,71.96,160005.37,Requires improvement in field coordination.
+EMP-1184,Sales Manager,North,2023-01-30,464265.91,42,2.89,85.03,107.65,155233.34,Requires improvement in field coordination.
+EMP-1185,Sales Manager,North,2024-05-24,81823.26,46,4.43,70.06,66.86,147312.93,Requires improvement in field coordination.
+EMP-1186,Field Manager,North,2023-06-11,499335.1,24,3.71,90.58,104.8,81384.13,Strong regional sales growth with operational efficiency.
+EMP-1187,Field Manager,West,2023-05-14,340935.22,34,3.01,83.05,75.01,182407.09,Performance impacted by delayed field audits.
+EMP-1188,Field Manager,North,2023-10-25,410486.09,11,3.3,77.73,71.4,69500.53,Strong regional sales growth with operational efficiency.
+EMP-1189,Field Manager,East,2023-07-14,654914.7,31,3.12,92.88,62.78,88584.6,Requires improvement in field coordination.
+EMP-1190,Sales Manager,Central,2024-04-13,398785.88,37,3.67,93.4,89.79,31611.78,Exceeded quarterly sales and service expectations.
+EMP-1191,Sales Manager,East,2024-07-03,200601.1,27,2.62,70.69,97.8,212283.92,Exceeded quarterly sales and service expectations.
+EMP-1192,Sales Manager,West,2023-02-22,643020.66,32,2.83,70.05,79.26,106780.98,Strong regional sales growth with operational efficiency.
+EMP-1193,Sales Manager,Central,2023-05-02,303766.64,23,2.68,79.16,111.15,77132.96,Requires improvement in field coordination.
+EMP-1194,Sales Manager,South,2024-09-08,732557.97,30,3.43,97.5,94.63,97745.53,Field inspections improved customer retention rates.
+EMP-1195,Field Manager,Central,2024-06-11,400054.53,7,2.6,87.12,114.32,134639.85,Field inspections improved customer retention rates.
+EMP-1196,Sales Manager,East,2024-06-03,279576.09,44,3.3,74.93,99.32,212224.46,Requires improvement in field coordination.
+EMP-1197,Field Manager,Central,2023-11-12,546117.86,24,3.69,60.63,76.5,36305.1,Exceeded quarterly sales and service expectations.
+EMP-1198,Sales Manager,Central,2024-05-06,467836.73,21,4.92,89.75,112.09,148632.26,Strong regional sales growth with operational efficiency.
+EMP-1199,Sales Manager,Central,2024-12-18,416962.63,51,4.05,91.96,61.82,173374.45,Strong regional sales growth with operational efficiency.
+EMP-1200,Sales Manager,West,2023-03-05,183549.03,33,3.28,65.75,105.24,108490.58,Requires improvement in field coordination.
+EMP-1201,Sales Manager,West,2024-06-29,413078.25,40,3.31,85.16,92.04,85300.62,Field inspections improved customer retention rates.
+EMP-1202,Field Manager,West,2023-07-16,432391.25,48,4.43,87.4,101.46,176395.19,Requires improvement in field coordination.
+EMP-1203,Sales Manager,West,2023-11-21,245304.48,24,3.06,96.97,73.81,79360.99,Field inspections improved customer retention rates.
+EMP-1204,Field Manager,East,2023-05-30,294162.22,55,4.3,70.94,95.88,140365.81,Exceeded quarterly sales and service expectations.
+EMP-1205,Field Manager,South,2024-07-05,79446.54,50,2.7,95.11,102.48,189361.24,Field inspections improved customer retention rates.
+EMP-1206,Field Manager,Central,2023-08-20,703116.75,49,3.18,64.15,109.27,67427.7,Strong regional sales growth with operational efficiency.
+EMP-1207,Sales Manager,South,2024-02-21,86743.77,31,3.33,77.95,104.5,42992.09,Requires improvement in field coordination.
+EMP-1208,Field Manager,Central,2023-08-26,384213.96,17,4.39,70.92,72.83,24199.02,Strong regional sales growth with operational efficiency.
+EMP-1209,Sales Manager,West,2023-07-10,689260.81,16,3.54,91.83,124.71,18721.56,Exceeded quarterly sales and service expectations.
+EMP-1210,Field Manager,Central,2024-06-20,663720.22,5,3.25,82.91,124.28,90410.11,Exceeded quarterly sales and service expectations.
+EMP-1211,Field Manager,West,2024-10-25,672481.97,13,4.63,77.78,65.42,37035.22,Field inspections improved customer retention rates.
+EMP-1212,Field Manager,Central,2024-10-16,553018.72,5,4.34,90.05,95.42,191747.86,Field inspections improved customer retention rates.
+EMP-1213,Field Manager,East,2023-09-12,628892.88,37,3.32,75.23,57.63,245604.45,Exceeded quarterly sales and service expectations.
+EMP-1214,Sales Manager,North,2023-09-25,232549.69,20,3.62,70.15,76.37,149790.58,Requires improvement in field coordination.
+EMP-1215,Field Manager,North,2024-10-16,534938.01,8,4.17,77.69,62.78,174657.67,Performance impacted by delayed field audits.
+EMP-1216,Field Manager,East,2024-03-01,307280.73,19,3.05,65.08,62.25,189456.36,Requires improvement in field coordination.
+EMP-1217,Field Manager,Central,2024-04-02,580145.37,56,4.16,68.3,69.8,191137.49,Strong regional sales growth with operational efficiency.
+EMP-1218,Field Manager,South,2023-06-18,104671.91,41,2.78,91.49,122.23,58517.63,Requires improvement in field coordination.
+EMP-1219,Field Manager,West,2023-02-26,648140.21,33,2.79,67.81,96.65,31825.99,Requires improvement in field coordination.
+EMP-1220,Field Manager,West,2023-09-18,142361.04,31,3.64,62.19,86.99,203659.68,Strong regional sales growth with operational efficiency.
+EMP-1221,Sales Manager,North,2024-04-28,572063.14,42,2.68,76.1,106.03,139879.24,Strong regional sales growth with operational efficiency.
+EMP-1222,Sales Manager,East,2024-01-27,250963.49,16,4.42,89.1,128.27,165011.4,Exceeded quarterly sales and service expectations.
+EMP-1223,Field Manager,North,2023-07-02,658734.2,29,3.44,85.94,102.94,139432.06,Performance impacted by delayed field audits.
+EMP-1224,Field Manager,Central,2024-03-10,420189.78,51,4.95,91.72,110.49,244837.76,Exceeded quarterly sales and service expectations.
+EMP-1225,Field Manager,North,2024-11-07,626352.31,20,3.65,65.89,65.08,220049.96,Strong regional sales growth with operational efficiency.
+EMP-1226,Field Manager,South,2023-02-15,480446.25,6,3.1,62.56,97.52,117145.86,Strong regional sales growth with operational efficiency.
+EMP-1227,Field Manager,South,2024-08-12,357273.97,39,3.04,92.82,54.52,130935.0,Performance impacted by delayed field audits.
+EMP-1228,Field Manager,South,2024-02-28,454232.37,54,4.18,72.19,74.14,44382.5,Requires improvement in field coordination.
+EMP-1229,Field Manager,Central,2024-05-22,242607.74,40,4.87,93.43,122.93,160238.35,Exceeded quarterly sales and service expectations.
+EMP-1230,Sales Manager,East,2024-01-21,730603.16,46,4.18,89.86,75.5,109917.91,Field inspections improved customer retention rates.
+EMP-1231,Sales Manager,North,2024-07-29,578091.27,35,3.1,68.56,118.6,44644.42,Exceeded quarterly sales and service expectations.
+EMP-1232,Field Manager,West,2024-01-15,727450.33,40,3.82,74.76,70.4,89263.12,Strong regional sales growth with operational efficiency.
+EMP-1233,Sales Manager,South,2024-08-24,424944.88,58,2.98,70.2,103.89,154701.29,Strong regional sales growth with operational efficiency.
+EMP-1234,Sales Manager,North,2024-05-05,385575.94,60,4.77,71.52,122.72,60833.87,Field inspections improved customer retention rates.
+EMP-1235,Sales Manager,West,2024-06-30,536938.4,50,3.01,94.77,94.17,196123.33,Exceeded quarterly sales and service expectations.
+EMP-1236,Field Manager,East,2023-07-28,265895.6,28,3.78,78.9,57.89,245516.43,Exceeded quarterly sales and service expectations.
+EMP-1237,Field Manager,Central,2024-03-03,269045.41,7,3.91,68.41,61.67,72585.79,Requires improvement in field coordination.
+EMP-1238,Field Manager,East,2024-05-15,156687.99,26,3.08,81.65,69.66,142154.21,Performance impacted by delayed field audits.
+EMP-1239,Field Manager,North,2024-06-20,372580.3,51,4.49,66.43,107.63,127195.92,Requires improvement in field coordination.
+EMP-1240,Sales Manager,North,2024-12-25,637347.95,9,4.86,85.39,111.15,108974.13,Field inspections improved customer retention rates.
+EMP-1241,Sales Manager,West,2023-01-17,56399.02,37,3.64,62.3,101.02,234136.89,Exceeded quarterly sales and service expectations.
+EMP-1242,Sales Manager,Central,2024-12-15,422548.74,31,2.53,80.12,71.98,244595.04,Strong regional sales growth with operational efficiency.
+EMP-1243,Field Manager,East,2023-12-29,614317.39,16,2.77,63.66,61.91,56063.69,Requires improvement in field coordination.
+EMP-1244,Field Manager,East,2024-12-01,606455.43,10,3.43,75.43,95.2,247655.93,Field inspections improved customer retention rates.
+EMP-1245,Sales Manager,North,2024-10-14,507615.0,59,4.12,61.2,82.42,100520.7,Exceeded quarterly sales and service expectations.
+EMP-1246,Sales Manager,Central,2023-02-13,541991.61,10,3.75,76.49,112.75,145805.59,Strong regional sales growth with operational efficiency.
+EMP-1247,Sales Manager,Central,2024-07-31,197991.94,60,4.23,81.54,71.69,231798.22,Performance impacted by delayed field audits.
+EMP-1248,Sales Manager,North,2023-11-03,175548.15,59,3.29,96.54,96.96,190541.07,Exceeded quarterly sales and service expectations.
+EMP-1249,Sales Manager,North,2024-05-27,444770.74,41,4.59,74.79,121.72,89615.16,Field inspections improved customer retention rates.
+EMP-1250,Field Manager,West,2023-12-01,87587.5,32,3.08,62.89,98.41,157327.66,Requires improvement in field coordination.
