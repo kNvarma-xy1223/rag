@@ -18,15 +18,15 @@ numpy>=1.26.0
 sentence-transformers>=3.0.0
 scikit-learn>=1.4.0
 
-# ── RAGAS evaluation framework ────────────────────────────────────────────────
-# ragas uses LangChain under the hood for LLM + embedding judge calls.
-# langchain-openai provides AzureChatOpenAI and AzureOpenAIEmbeddings wrappers.
-ragas>=0.2.0
-langchain>=0.2.0
-langchain-openai>=0.1.0
+langchain
+langchain-openai
+langchain-community
+
+deepeval>=4.0.0
 
 # Utilities
 aiofiles>=23.2.0
 python-multipart>=0.0.9
 httpx>=0.27.0
 reportlab>=4.1.0
+jsonschema

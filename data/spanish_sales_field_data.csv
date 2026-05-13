@@ -1,0 +1,251 @@
+employee_id,role,region,evaluation_date,revenue_usd,field_visits,customer_satisfaction,performance_score,target_achievement_pct,operational_cost_usd,evaluation_notes
+EMP-1001,Gerente de Ventas,South,2024-11-27,493886.06,55,4.98,78.64,78.46,235874.28,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1002,Gerente de Campo,South,2024-02-03,109985.88,44,3.24,69.37,55.88,74313.29,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1003,Gerente de Campo,North,2023-07-11,302490.16,10,2.51,71.71,78.79,74743.95,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1004,Gerente de Campo,Central,2023-11-29,364190.57,40,3.78,63.93,57.17,143012.75,Requiere mejoras en la coordinación de campo.
+EMP-1005,Gerente de Campo,Central,2024-06-17,58638.43,31,3.47,63.22,122.09,227249.82,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1006,Gerente de Ventas,East,2024-03-07,529721.19,15,2.85,71.44,89.45,25184.12,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1007,Gerente de Campo,South,2024-04-13,388961.92,9,3.4,95.88,107.67,128992.58,Requiere mejoras en la coordinación de campo.
+EMP-1008,Gerente de Ventas,West,2023-12-09,144842.67,5,4.87,72.62,99.62,202978.35,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1009,Gerente de Campo,West,2023-11-18,620832.83,60,4.13,82.59,74.03,154770.7,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1010,Gerente de Ventas,East,2024-01-21,725202.24,25,3.23,86.41,89.28,148211.03,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1011,Gerente de Campo,Central,2023-01-28,621546.16,30,3.41,95.42,65.98,249343.58,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1012,Gerente de Campo,West,2023-05-23,710082.44,18,3.6,71.07,105.43,206551.74,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1013,Gerente de Campo,West,2024-08-19,219414.82,47,2.89,76.08,80.16,117776.01,Requiere mejoras en la coordinación de campo.
+EMP-1014,Gerente de Campo,Central,2024-10-15,424057.18,60,4.23,80.66,113.26,96287.08,Requiere mejoras en la coordinación de campo.
+EMP-1015,Gerente de Ventas,East,2024-03-16,126558.6,20,4.14,73.49,101.76,20631.21,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1016,Gerente de Ventas,West,2024-01-19,57383.44,21,3.06,88.38,94.64,175039.46,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1017,Gerente de Campo,East,2024-03-01,374144.25,48,3.97,79.02,77.6,15895.04,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1018,Gerente de Ventas,East,2024-05-02,131248.54,51,2.85,71.85,86.43,59648.16,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1019,Gerente de Ventas,East,2024-10-25,356716.16,49,3.63,62.55,53.57,180586.96,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1020,Gerente de Ventas,Central,2024-03-12,523997.53,15,4.82,88.14,91.28,142458.47,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1021,Gerente de Campo,South,2024-04-05,212298.88,30,4.07,67.08,102.58,104939.77,Requiere mejoras en la coordinación de campo.
+EMP-1022,Gerente de Campo,North,2024-07-03,322185.05,50,3.04,70.58,106.3,201041.93,Requiere mejoras en la coordinación de campo.
+EMP-1023,Gerente de Ventas,Central,2024-02-02,306055.12,17,3.64,69.97,119.01,136651.6,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1024,Gerente de Campo,Central,2024-08-27,460903.3,27,3.38,77.4,63.8,171661.33,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1025,Gerente de Ventas,West,2024-03-04,520477.06,25,2.79,71.6,64.64,176424.77,Requiere mejoras en la coordinación de campo.
+EMP-1026,Gerente de Ventas,Central,2023-06-20,452364.23,32,2.96,84.15,105.47,164862.42,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1027,Gerente de Campo,West,2023-05-20,252184.34,16,3.29,77.14,54.29,96169.4,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1028,Gerente de Ventas,West,2023-06-21,620651.16,40,3.76,78.81,104.78,109751.3,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1029,Gerente de Ventas,West,2024-08-02,445778.46,55,4.4,71.1,71.99,139026.07,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1030,Gerente de Campo,North,2024-03-27,434808.33,12,3.93,70.18,93.45,247814.47,Requiere mejoras en la coordinación de campo.
+EMP-1031,Gerente de Ventas,West,2023-09-27,742843.01,11,4.34,84.84,69.8,219954.36,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1032,Gerente de Campo,East,2024-12-28,653539.74,10,3.6,97.77,112.05,66867.05,Requiere mejoras en la coordinación de campo.
+EMP-1033,Gerente de Campo,East,2024-09-03,166187.13,13,4.46,90.91,114.44,146817.84,Requiere mejoras en la coordinación de campo.
+EMP-1034,Gerente de Ventas,South,2024-02-26,276557.53,50,3.23,81.76,126.19,133459.6,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1035,Gerente de Ventas,South,2024-11-23,744740.36,60,4.14,86.65,60.62,45098.43,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1036,Gerente de Campo,West,2024-06-11,392621.11,41,4.08,83.86,80.01,28123.91,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1037,Gerente de Campo,West,2024-10-12,536292.53,28,3.64,78.55,96.56,218537.86,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1038,Gerente de Campo,East,2023-10-18,645074.37,55,3.84,68.28,84.37,60844.35,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1039,Gerente de Campo,North,2023-04-12,433117.37,13,3.92,78.44,77.5,173812.46,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1040,Gerente de Campo,East,2023-06-12,61396.95,59,2.89,77.35,129.35,112671.83,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1041,Gerente de Campo,East,2024-12-17,115337.99,28,3.13,74.13,122.3,49726.02,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1042,Gerente de Ventas,Central,2024-11-27,350461.66,10,4.26,60.04,88.14,41847.95,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1043,Gerente de Campo,North,2023-08-23,56500.86,49,3.36,64.58,118.83,176567.44,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1044,Gerente de Campo,South,2023-03-12,112531.76,56,2.76,71.91,120.48,42911.03,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1045,Gerente de Ventas,Central,2024-12-04,477223.47,15,3.6,87.45,100.25,46329.79,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1046,Gerente de Campo,West,2023-11-19,651973.77,10,4.74,65.32,59.85,185202.2,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1047,Gerente de Ventas,East,2023-07-30,223450.46,46,2.71,81.03,98.0,155822.34,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1048,Gerente de Ventas,North,2023-09-04,573490.55,23,4.12,89.78,113.5,67441.86,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1049,Gerente de Campo,West,2024-08-05,496657.63,9,3.82,97.15,128.95,234141.86,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1050,Gerente de Campo,North,2023-01-15,305788.72,48,2.93,77.9,128.99,27518.04,Requiere mejoras en la coordinación de campo.
+EMP-1051,Gerente de Campo,West,2024-12-19,201020.06,8,4.87,75.12,72.92,181030.98,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1052,Gerente de Campo,South,2024-07-03,107699.47,39,3.84,65.8,56.69,28965.17,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1053,Gerente de Campo,South,2023-03-01,323512.05,45,4.41,84.69,101.45,84440.68,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1054,Gerente de Ventas,North,2023-01-13,110348.96,32,2.79,83.27,54.4,169859.1,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1055,Gerente de Ventas,South,2024-01-16,541049.73,15,3.74,73.17,91.38,207401.65,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1056,Gerente de Ventas,East,2024-06-20,574843.47,60,3.17,93.68,111.71,17045.5,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1057,Gerente de Ventas,South,2024-01-12,234064.76,41,4.07,78.85,90.86,23305.39,Requiere mejoras en la coordinación de campo.
+EMP-1058,Gerente de Ventas,North,2023-01-13,228581.26,11,4.74,85.62,59.23,187787.19,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1059,Gerente de Ventas,West,2023-08-18,82187.07,28,3.46,65.7,124.49,215796.45,Requiere mejoras en la coordinación de campo.
+EMP-1060,Gerente de Campo,South,2023-08-17,223784.23,51,3.3,91.39,95.72,38656.22,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1061,Gerente de Ventas,Central,2024-04-12,717855.59,9,4.69,92.91,111.88,84567.47,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1062,Gerente de Ventas,West,2023-07-20,308243.55,23,3.91,71.55,99.82,121342.41,Requiere mejoras en la coordinación de campo.
+EMP-1063,Gerente de Ventas,East,2023-01-02,155396.46,31,2.56,80.58,100.88,176430.59,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1064,Gerente de Campo,South,2024-12-29,644304.19,51,3.27,67.8,128.65,110755.8,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1065,Gerente de Campo,Central,2023-04-08,115118.65,19,4.74,79.75,106.07,99398.07,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1066,Gerente de Ventas,East,2023-09-25,496050.98,30,2.69,81.58,84.8,241412.39,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1067,Gerente de Campo,South,2023-05-20,698229.37,30,4.25,87.94,75.44,75269.41,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1068,Gerente de Ventas,West,2023-11-12,158787.39,15,3.62,71.93,59.66,95988.99,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1069,Gerente de Campo,North,2023-08-09,235505.55,12,2.73,90.69,74.34,179129.15,Requiere mejoras en la coordinación de campo.
+EMP-1070,Gerente de Campo,South,2023-02-01,153826.66,50,3.12,73.52,91.08,172524.01,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1071,Gerente de Campo,North,2023-01-13,648220.91,40,4.37,69.49,86.96,202935.22,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1072,Gerente de Ventas,Central,2024-08-23,631260.63,19,2.83,91.3,79.78,161271.41,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1073,Gerente de Campo,North,2023-12-06,692200.01,9,2.55,62.45,122.2,116423.52,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1074,Gerente de Ventas,North,2024-01-27,79887.42,34,2.63,95.12,84.65,183863.4,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1075,Gerente de Campo,Central,2024-09-23,170965.05,18,4.77,70.45,85.68,45671.54,Requiere mejoras en la coordinación de campo.
+EMP-1076,Gerente de Ventas,West,2023-07-24,503094.88,36,3.53,80.93,54.88,77146.24,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1077,Gerente de Ventas,Central,2024-05-11,491528.07,56,3.86,60.74,80.6,181208.96,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1078,Gerente de Campo,East,2023-03-01,688873.91,37,3.3,70.28,52.09,153307.92,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1079,Gerente de Campo,East,2024-06-30,420602.6,54,3.96,68.84,62.77,69485.69,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1080,Gerente de Ventas,South,2023-08-31,584834.81,19,3.94,97.34,81.07,234449.45,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1081,Gerente de Campo,Central,2023-05-26,614347.16,49,3.4,82.48,106.28,94403.72,Requiere mejoras en la coordinación de campo.
+EMP-1082,Gerente de Ventas,North,2023-08-27,635687.79,56,4.7,78.7,74.72,127704.74,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1083,Gerente de Ventas,East,2023-03-02,63949.59,35,2.5,94.88,66.12,41317.49,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1084,Gerente de Ventas,East,2024-12-22,153398.41,50,4.79,89.43,117.72,216560.67,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1085,Gerente de Campo,East,2023-06-28,460211.66,26,3.25,65.19,62.6,237686.45,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1086,Gerente de Campo,North,2024-12-19,206266.05,42,4.54,74.38,108.72,80684.14,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1087,Gerente de Campo,South,2024-10-16,645529.88,54,4.91,61.23,98.19,231049.17,Requiere mejoras en la coordinación de campo.
+EMP-1088,Gerente de Ventas,East,2024-04-02,705681.46,14,3.33,62.96,77.74,86684.48,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1089,Gerente de Ventas,West,2024-03-24,235648.71,20,4.23,73.32,112.96,182899.26,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1090,Gerente de Campo,Central,2024-10-28,728371.28,31,3.73,74.39,93.68,34342.85,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1091,Gerente de Ventas,North,2023-12-17,163859.56,9,4.5,61.27,51.61,72670.65,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1092,Gerente de Ventas,Central,2024-05-09,671551.89,15,4.33,80.79,121.85,32345.12,Requiere mejoras en la coordinación de campo.
+EMP-1093,Gerente de Ventas,South,2024-02-24,351926.33,46,2.91,93.81,62.57,34301.87,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1094,Gerente de Campo,North,2024-01-05,512418.52,24,3.09,61.89,95.74,211565.08,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1095,Gerente de Ventas,South,2024-10-15,349324.17,23,4.56,83.75,88.43,33276.86,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1096,Gerente de Campo,North,2024-10-19,733940.39,35,4.61,71.72,81.8,127383.23,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1097,Gerente de Campo,East,2024-07-31,179416.85,29,3.42,76.94,71.06,121613.91,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1098,Gerente de Ventas,South,2024-07-20,155791.47,49,4.17,63.26,77.5,139947.76,Requiere mejoras en la coordinación de campo.
+EMP-1099,Gerente de Ventas,South,2024-05-02,638558.02,57,3.81,96.69,104.97,234726.74,Requiere mejoras en la coordinación de campo.
+EMP-1100,Gerente de Campo,South,2023-05-04,105268.53,59,4.29,79.08,122.04,202108.08,Requiere mejoras en la coordinación de campo.
+EMP-1101,Gerente de Campo,South,2024-10-04,171015.28,15,4.93,90.72,60.09,111609.98,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1102,Gerente de Ventas,West,2024-07-19,633875.68,21,3.3,87.63,114.59,30886.59,Requiere mejoras en la coordinación de campo.
+EMP-1103,Gerente de Campo,West,2023-04-26,649636.93,38,3.65,93.19,112.92,159533.9,Requiere mejoras en la coordinación de campo.
+EMP-1104,Gerente de Campo,North,2023-10-20,154749.62,41,3.97,88.82,125.17,231982.76,Requiere mejoras en la coordinación de campo.
+EMP-1105,Gerente de Campo,West,2023-05-28,664525.49,21,3.46,78.45,98.72,18991.76,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1106,Gerente de Campo,North,2023-12-12,77147.77,26,4.23,61.87,88.02,74460.25,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1107,Gerente de Campo,East,2024-03-29,267664.51,58,3.73,86.45,57.86,218536.01,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1108,Gerente de Campo,West,2024-06-12,238593.99,31,4.01,63.39,85.34,229223.87,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1109,Gerente de Campo,Central,2023-01-30,624712.17,37,4.48,62.49,106.77,106812.43,Requiere mejoras en la coordinación de campo.
+EMP-1110,Gerente de Ventas,South,2023-10-08,184934.41,58,3.0,62.19,52.65,22134.23,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1111,Gerente de Campo,Central,2024-04-01,626454.4,37,3.49,95.08,104.49,68065.14,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1112,Gerente de Ventas,East,2023-01-29,722364.26,35,3.97,73.29,63.08,224678.06,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1113,Gerente de Campo,East,2024-10-29,84755.73,59,3.93,96.67,118.57,165371.17,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1114,Gerente de Campo,Central,2023-01-09,409296.86,60,4.45,89.17,50.71,228763.71,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1115,Gerente de Ventas,East,2024-04-15,226673.31,56,4.86,87.08,106.75,76090.85,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1116,Gerente de Campo,East,2024-07-28,202746.34,24,4.19,91.32,81.77,34554.9,Requiere mejoras en la coordinación de campo.
+EMP-1117,Gerente de Campo,East,2024-11-02,258933.15,11,3.7,72.78,72.12,88032.9,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1118,Gerente de Campo,West,2024-11-07,181852.06,38,4.41,94.19,114.43,202567.3,Requiere mejoras en la coordinación de campo.
+EMP-1119,Gerente de Campo,West,2023-02-06,526529.03,51,2.56,78.9,73.65,227658.78,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1120,Gerente de Ventas,Central,2023-11-04,290216.93,50,3.06,80.32,112.79,227566.36,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1121,Gerente de Ventas,South,2024-11-27,638447.09,40,2.95,63.71,60.24,72076.44,Requiere mejoras en la coordinación de campo.
+EMP-1122,Gerente de Campo,East,2023-09-24,508104.25,19,3.39,88.28,74.57,199141.7,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1123,Gerente de Campo,West,2023-07-19,374632.44,12,3.68,92.92,96.69,236632.24,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1124,Gerente de Ventas,East,2024-02-24,657248.43,29,3.82,75.7,119.67,46186.83,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1125,Gerente de Campo,East,2024-10-11,150256.91,60,4.29,89.6,89.01,161447.87,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1126,Gerente de Ventas,South,2024-09-21,53299.45,22,3.02,89.39,96.1,48024.43,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1127,Gerente de Campo,North,2023-11-26,493441.28,30,3.57,78.14,50.37,138107.82,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1128,Gerente de Ventas,North,2024-01-28,62541.29,5,4.07,69.46,105.48,92643.95,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1129,Gerente de Campo,East,2024-03-20,166914.13,57,2.61,96.04,86.47,134869.22,Requiere mejoras en la coordinación de campo.
+EMP-1130,Gerente de Ventas,North,2023-08-22,289912.99,36,3.4,67.16,125.85,230369.3,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1131,Gerente de Ventas,West,2024-10-17,559018.18,13,3.03,60.83,90.37,39558.88,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1132,Gerente de Campo,North,2024-12-07,589874.76,44,2.62,97.8,102.96,166856.23,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1133,Gerente de Ventas,East,2024-03-06,341742.9,29,2.81,69.6,106.15,59318.78,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1134,Gerente de Ventas,Central,2023-05-01,513738.08,22,4.06,86.63,83.51,225669.26,Requiere mejoras en la coordinación de campo.
+EMP-1135,Gerente de Campo,East,2024-12-21,129808.79,11,3.74,83.14,112.24,209559.72,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1136,Gerente de Campo,North,2023-01-14,256745.84,7,3.87,94.59,105.06,125359.35,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1137,Gerente de Ventas,North,2023-09-20,684816.03,58,3.94,78.78,125.96,197086.29,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1138,Gerente de Ventas,East,2024-11-24,369725.86,23,3.16,61.9,115.05,219793.71,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1139,Gerente de Campo,East,2024-01-02,348196.64,12,2.74,88.81,53.67,214479.69,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1140,Gerente de Campo,West,2024-04-12,718562.41,22,4.7,63.53,115.2,53888.66,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1141,Gerente de Campo,South,2024-12-13,634995.84,49,4.63,90.4,101.91,201258.29,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1142,Gerente de Ventas,South,2024-09-17,737098.42,59,2.9,75.81,97.26,202543.55,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1143,Gerente de Campo,West,2024-05-14,595415.01,44,2.57,86.01,117.08,243626.7,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1144,Gerente de Ventas,Central,2024-08-01,671315.75,33,2.61,69.94,75.14,179096.36,Requiere mejoras en la coordinación de campo.
+EMP-1145,Gerente de Ventas,South,2024-05-08,734526.89,47,4.68,79.73,105.06,158377.36,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1146,Gerente de Campo,North,2024-10-20,514597.45,46,3.46,91.88,94.67,247069.99,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1147,Gerente de Ventas,East,2023-10-12,403897.3,35,4.63,93.04,55.99,127995.51,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1148,Gerente de Ventas,West,2023-04-01,404850.53,40,4.11,75.32,68.8,120182.7,Requiere mejoras en la coordinación de campo.
+EMP-1149,Gerente de Campo,Central,2024-07-16,362947.68,12,4.95,88.32,51.42,106825.52,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1150,Gerente de Ventas,West,2023-12-16,628136.13,55,4.01,83.52,74.37,132001.06,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1151,Gerente de Campo,East,2024-04-08,627717.69,57,3.06,77.27,94.81,158741.91,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1152,Gerente de Ventas,Central,2024-06-18,118205.92,47,3.05,72.97,116.39,241464.08,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1153,Gerente de Campo,North,2023-09-18,541467.24,7,4.74,78.71,115.75,188202.61,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1154,Gerente de Ventas,West,2023-02-17,181280.38,59,3.48,77.37,112.51,182029.1,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1155,Gerente de Ventas,Central,2023-02-19,590501.62,33,3.64,82.39,90.34,241325.14,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1156,Gerente de Campo,South,2023-04-17,637171.28,35,4.81,89.68,122.81,176036.25,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1157,Gerente de Campo,East,2024-02-12,510265.27,43,4.71,79.16,80.77,245080.18,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1158,Gerente de Campo,East,2024-12-19,729344.15,33,4.51,65.25,98.2,222744.85,Requiere mejoras en la coordinación de campo.
+EMP-1159,Gerente de Campo,South,2024-12-28,548312.05,40,4.08,67.63,99.93,79739.08,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1160,Gerente de Ventas,Central,2024-11-14,402725.41,49,4.09,86.99,110.86,144947.25,Requiere mejoras en la coordinación de campo.
+EMP-1161,Gerente de Campo,North,2024-01-26,521970.44,58,3.83,93.34,83.79,13064.92,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1162,Gerente de Ventas,South,2023-03-05,87145.5,8,3.0,88.51,62.87,78787.73,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1163,Gerente de Campo,South,2024-10-24,192800.63,39,2.58,90.93,58.2,218328.49,Requiere mejoras en la coordinación de campo.
+EMP-1164,Gerente de Campo,West,2024-03-02,216316.83,55,4.49,86.45,105.43,21275.17,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1165,Gerente de Campo,South,2024-10-10,726083.25,8,2.53,69.55,99.64,197421.97,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1166,Gerente de Campo,South,2024-11-30,578575.39,39,4.35,67.47,107.99,56439.45,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1167,Gerente de Ventas,South,2023-06-14,180883.61,16,4.34,64.54,53.25,76986.94,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1168,Gerente de Campo,Central,2024-11-08,53951.6,34,4.27,65.88,62.3,87431.21,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1169,Gerente de Campo,Central,2023-03-11,393385.66,41,3.88,62.77,106.61,136094.82,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1170,Gerente de Ventas,East,2023-10-28,341151.87,39,3.51,73.28,120.67,169200.27,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1171,Gerente de Ventas,North,2024-11-15,715215.79,44,3.83,97.87,115.9,245471.97,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1172,Gerente de Campo,West,2023-04-27,361967.07,46,4.03,83.6,126.71,173812.33,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1173,Gerente de Campo,West,2024-05-13,229613.39,51,3.21,94.63,115.77,99989.93,Requiere mejoras en la coordinación de campo.
+EMP-1174,Gerente de Ventas,Central,2023-01-08,257503.78,46,2.98,79.53,125.86,50174.75,Requiere mejoras en la coordinación de campo.
+EMP-1175,Gerente de Ventas,West,2024-10-24,197547.03,45,4.43,92.87,83.94,34942.43,Requiere mejoras en la coordinación de campo.
+EMP-1176,Gerente de Ventas,East,2024-07-25,572823.58,14,2.56,87.24,53.03,27579.53,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1177,Gerente de Ventas,North,2024-02-03,452473.61,19,4.78,75.49,86.09,107067.52,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1178,Gerente de Ventas,East,2024-05-29,424384.06,46,4.3,62.4,109.68,20924.04,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1179,Gerente de Ventas,North,2024-04-30,252885.62,48,3.25,63.29,111.22,115042.28,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1180,Gerente de Ventas,East,2024-11-24,423427.43,13,4.37,90.28,117.96,80794.83,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1181,Gerente de Campo,West,2024-07-04,720174.15,5,3.88,81.09,59.86,11207.16,Requiere mejoras en la coordinación de campo.
+EMP-1182,Gerente de Ventas,South,2023-06-14,263283.81,52,4.35,87.59,66.94,227350.73,Requiere mejoras en la coordinación de campo.
+EMP-1183,Gerente de Ventas,Central,2024-04-17,204551.58,58,3.13,64.36,103.68,146150.23,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1184,Gerente de Ventas,South,2024-11-18,253456.87,9,3.13,67.5,96.45,238369.58,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1185,Gerente de Ventas,Central,2023-06-06,120031.54,44,2.67,67.35,88.87,88803.06,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1186,Gerente de Campo,East,2024-01-04,615389.84,32,2.92,71.9,112.85,180927.79,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1187,Gerente de Ventas,North,2023-06-29,525706.13,26,4.69,77.59,78.7,83313.23,Requiere mejoras en la coordinación de campo.
+EMP-1188,Gerente de Ventas,North,2023-01-20,639255.1,59,4.57,93.87,65.71,186050.71,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1189,Gerente de Ventas,Central,2024-04-28,618849.68,42,3.51,82.42,122.5,142382.56,Requiere mejoras en la coordinación de campo.
+EMP-1190,Gerente de Ventas,Central,2023-04-03,306073.04,19,4.73,82.4,118.57,42131.5,Requiere mejoras en la coordinación de campo.
+EMP-1191,Gerente de Campo,Central,2023-05-24,304705.89,5,4.16,92.22,114.52,157368.63,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1192,Gerente de Campo,East,2023-02-11,161455.69,41,4.87,85.06,127.42,186620.75,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1193,Gerente de Ventas,West,2024-04-25,583030.66,19,2.66,74.04,53.42,59625.78,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1194,Gerente de Campo,East,2024-08-15,667086.39,7,4.95,72.31,106.3,135129.5,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1195,Gerente de Ventas,South,2024-06-12,313661.7,29,3.41,84.83,116.84,133999.1,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1196,Gerente de Campo,West,2023-06-19,297028.61,60,3.36,90.12,120.97,11583.44,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1197,Gerente de Ventas,South,2024-02-29,103961.76,46,3.2,65.71,62.59,154484.87,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1198,Gerente de Campo,North,2023-09-07,554178.96,35,4.19,78.2,97.26,165342.22,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1199,Gerente de Ventas,South,2023-09-22,139519.58,42,2.9,83.92,53.14,147344.63,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1200,Gerente de Ventas,North,2023-08-10,411648.48,30,4.0,81.42,51.49,182691.35,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1201,Gerente de Campo,South,2024-09-30,474568.13,35,4.67,66.48,116.43,154201.29,Requiere mejoras en la coordinación de campo.
+EMP-1202,Gerente de Campo,South,2023-04-22,167405.19,48,3.36,77.23,97.25,65155.31,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1203,Gerente de Ventas,West,2024-09-21,191643.98,60,4.77,86.01,116.12,155322.64,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1204,Gerente de Ventas,Central,2023-01-02,664426.85,39,3.76,64.47,88.58,41278.92,Requiere mejoras en la coordinación de campo.
+EMP-1205,Gerente de Campo,West,2023-12-25,415430.96,28,4.69,86.51,84.32,235221.19,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1206,Gerente de Ventas,West,2023-09-21,347842.58,21,3.69,68.84,118.72,77984.0,Requiere mejoras en la coordinación de campo.
+EMP-1207,Gerente de Ventas,East,2024-02-23,53828.62,52,4.47,81.96,59.43,11726.57,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1208,Gerente de Campo,Central,2023-10-10,124608.25,32,4.13,69.64,118.4,111654.77,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1209,Gerente de Campo,East,2023-11-11,578480.33,31,3.88,81.19,64.3,144182.52,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1210,Gerente de Campo,South,2023-04-13,591936.14,30,4.34,92.49,102.74,189475.41,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1211,Gerente de Ventas,West,2024-10-13,405840.48,55,3.35,80.92,105.76,179629.58,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1212,Gerente de Ventas,East,2023-03-23,613058.55,57,2.86,95.18,84.83,25379.31,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1213,Gerente de Ventas,West,2024-03-25,557146.3,30,4.03,79.8,106.93,153393.42,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1214,Gerente de Ventas,Central,2024-12-16,191195.07,47,4.83,79.69,65.58,198150.27,Requiere mejoras en la coordinación de campo.
+EMP-1215,Gerente de Ventas,West,2023-12-28,480632.99,48,2.59,69.09,50.02,47786.74,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1216,Gerente de Campo,Central,2024-08-19,333815.68,17,3.79,88.0,55.49,31639.81,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1217,Gerente de Campo,North,2023-09-25,293232.56,57,3.19,83.04,65.56,233131.32,Requiere mejoras en la coordinación de campo.
+EMP-1218,Gerente de Ventas,East,2024-07-04,334994.24,11,3.9,79.12,77.2,38082.16,Requiere mejoras en la coordinación de campo.
+EMP-1219,Gerente de Campo,West,2024-08-23,535934.3,29,3.91,89.26,110.6,240697.29,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1220,Gerente de Ventas,East,2024-02-27,387379.11,21,2.67,84.08,129.54,172459.11,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1221,Gerente de Campo,North,2024-07-21,411552.95,5,4.25,70.01,72.98,105743.35,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1222,Gerente de Ventas,West,2023-07-24,383588.82,27,3.05,81.8,64.62,189077.5,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1223,Gerente de Ventas,South,2023-04-20,564800.35,60,3.16,68.71,116.8,210720.33,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1224,Gerente de Ventas,West,2024-01-16,694131.69,48,4.89,78.72,50.53,215701.44,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1225,Gerente de Campo,West,2023-08-16,394638.26,41,4.67,78.65,128.75,229841.64,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1226,Gerente de Ventas,West,2023-05-04,87903.72,56,3.56,95.71,52.61,93349.35,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1227,Gerente de Campo,East,2023-07-11,270955.89,5,2.53,68.01,96.48,88104.69,Requiere mejoras en la coordinación de campo.
+EMP-1228,Gerente de Campo,East,2024-01-09,215997.41,35,4.9,73.04,64.71,111746.29,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1229,Gerente de Campo,South,2024-07-22,245740.67,16,3.93,97.21,104.88,205405.76,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1230,Gerente de Campo,West,2024-05-26,649416.12,17,2.86,96.45,61.96,203360.41,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1231,Gerente de Ventas,Central,2024-08-04,746893.24,59,4.08,80.29,75.26,126788.85,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1232,Gerente de Ventas,West,2023-12-09,328881.33,49,2.91,68.19,70.34,211353.21,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1233,Gerente de Campo,Central,2023-07-23,302673.41,40,3.89,90.78,77.53,108822.62,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1234,Gerente de Ventas,West,2024-09-20,735561.19,23,3.39,85.58,89.0,186766.28,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1235,Gerente de Campo,Central,2024-02-19,374626.46,14,4.67,84.34,124.29,111235.96,Requiere mejoras en la coordinación de campo.
+EMP-1236,Gerente de Ventas,East,2024-03-31,105378.35,26,3.07,72.04,73.31,74193.37,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1237,Gerente de Campo,East,2024-12-18,573526.85,38,4.91,75.73,64.71,15544.26,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1238,Gerente de Ventas,West,2024-06-20,197400.04,30,2.76,62.42,120.3,141624.1,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1239,Gerente de Ventas,East,2024-03-29,122749.88,44,2.89,84.88,120.84,84248.96,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1240,Gerente de Ventas,West,2024-07-07,141893.98,58,2.93,61.34,78.55,229665.37,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1241,Gerente de Campo,West,2024-06-20,433981.69,13,4.92,86.51,64.16,153420.21,Requiere mejoras en la coordinación de campo.
+EMP-1242,Gerente de Campo,South,2023-11-07,686246.21,35,3.85,90.58,85.35,97788.0,El rendimiento se vio afectado por auditorías retrasadas.
+EMP-1243,Gerente de Ventas,West,2023-11-03,50064.64,57,4.4,65.18,72.94,138423.73,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1244,Gerente de Ventas,Central,2024-03-23,586108.44,56,3.23,68.79,50.58,99674.53,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1245,Gerente de Campo,South,2024-06-13,224927.28,50,4.34,74.81,80.27,73115.27,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1246,Gerente de Campo,East,2023-04-24,249273.8,52,3.83,70.22,65.04,26431.35,Las inspecciones de campo mejoraron la retención de clientes.
+EMP-1247,Gerente de Campo,North,2023-07-10,482410.59,22,4.25,78.7,75.65,46515.83,Requiere mejoras en la coordinación de campo.
+EMP-1248,Gerente de Ventas,South,2023-12-17,247480.18,13,4.29,87.63,68.62,46164.09,Superó las expectativas trimestrales de ventas y servicio.
+EMP-1249,Gerente de Campo,South,2023-02-27,268103.68,56,3.75,74.11,105.75,17616.91,Fuerte crecimiento regional de ventas con eficiencia operativa.
+EMP-1250,Gerente de Campo,North,2023-05-05,592957.04,9,3.86,66.9,121.66,70019.07,Superó las expectativas trimestrales de ventas y servicio.

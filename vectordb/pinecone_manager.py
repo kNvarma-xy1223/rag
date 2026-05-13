@@ -165,10 +165,11 @@ class PineconeManager:
     ) -> List[Dict[str, Any]]:
         index = self._pc.Index(index_name)
 
-        # Build Pinecone filter syntax
-        pinecone_filter = None
-        if filters:
-            pinecone_filter = {k: {"$eq": v} for k, v in filters.items()}
+        # Pass the filter dict as-is — query_parser already builds proper
+        # Pinecone syntax ($eq / $gte / $and etc.).  Simple dict of plain
+        # string values (legacy callers) still works because Pinecone accepts
+        # {"key": "value"} as an implicit $eq match.
+        pinecone_filter = filters if filters else None
 
         response = index.query(
             vector=query_vector,

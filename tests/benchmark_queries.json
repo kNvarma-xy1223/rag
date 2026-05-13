@@ -1,74 +1,75 @@
-[
-  {
-    "query": "What is the total revenue for Q2 2024?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_0", "corporate_report_en.pdf_1"],
-    "language": "en",
-    "category": "financial"
-  },
-  {
-    "query": "What is the gross margin percentage?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_2", "sales_data.csv_0"],
-    "language": "en",
-    "category": "financial"
-  },
-  {
-    "query": "How many active customers did the company have at quarter-end?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_3"],
-    "language": "en",
-    "category": "metrics"
-  },
-  {
-    "query": "What is the Annual Recurring Revenue (ARR)?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_3"],
-    "language": "en",
-    "category": "saas_metrics"
-  },
-  {
-    "query": "What is the revenue guidance for Q3 2024?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_5"],
-    "language": "en",
-    "category": "guidance"
-  },
-  {
-    "query": "¿Cuáles son los ingresos totales del Q2 2024?",
-    "relevant_doc_ids": ["informe_corporativo_es.pdf_0", "informe_corporativo_es.pdf_1"],
-    "language": "es",
-    "category": "financial"
-  },
-  {
-    "query": "¿Cuál es el margen EBITDA?",
-    "relevant_doc_ids": ["informe_corporativo_es.pdf_2"],
-    "language": "es",
-    "category": "financial"
-  },
-  {
-    "query": "¿Cuántos clientes activos tiene la empresa?",
-    "relevant_doc_ids": ["informe_corporativo_es.pdf_3"],
-    "language": "es",
-    "category": "metrics"
-  },
-  {
-    "query": "What are the research and development expenses?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_2"],
-    "language": "en",
-    "category": "costs"
-  },
-  {
-    "query": "What is the operating cash flow?",
-    "relevant_doc_ids": ["corporate_report_en.pdf_4"],
-    "language": "en",
-    "category": "cash_flow"
-  },
-  {
-    "query": "What is the average revenue per transaction?",
-    "relevant_doc_ids": ["sales_data.csv_0"],
-    "language": "en",
-    "category": "numerical"
-  },
-  {
-    "query": "What is the highest gross profit recorded in the sales data?",
-    "relevant_doc_ids": ["sales_data.csv_0"],
-    "language": "en",
-    "category": "numerical"
-  }
+ [
+    {
+        "query": "What was the average performance score for Sales Managers in Q2 2024?",
+        "ground_truth": "Sales Managers maintained an average performance score above 85 during Q2 2024.",
+        "language": "en",
+        "category": "performance"
+    },
+    {
+        "query": "Which region generated the highest revenue in 2024?",
+        "ground_truth": "The West and North regions generated the highest revenue across operational divisions.",
+        "language": "en",
+        "category": "sales"
+    },
+    {
+        "query": "How many field inspections were completed by Field Managers?",
+        "ground_truth": "Field Managers completed more than 14,000 inspections during the reporting period.",
+        "language": "en",
+        "category": "field_operations"
+    },
+    {
+        "query": "What operational improvements increased customer satisfaction?",
+        "ground_truth": "Improved field responsiveness and proactive maintenance scheduling increased customer satisfaction.",
+        "language": "en",
+        "category": "customer_experience"
+    },
+    {
+        "query": "What was the target achievement percentage for top-performing managers?",
+        "ground_truth": "Top-performing managers exceeded target achievement rates above 100 percent.",
+        "language": "en",
+        "category": "kpi"
+    },
+    {
+        "query": "¿Cuál fue el puntaje promedio de rendimiento de los Gerentes de Ventas?",
+        "ground_truth": "Los Gerentes de Ventas mantuvieron puntuaciones promedio superiores a 85.",
+        "language": "es",
+        "category": "performance"
+    },
+    {
+        "query": "¿Qué región generó los mayores ingresos?",
+        "ground_truth": "Las regiones Norte y Oeste generaron los ingresos más altos.",
+        "language": "es",
+        "category": "sales"
+    },
+    {
+        "query": "¿Cuántas inspecciones realizaron los Gerentes de Campo?",
+        "ground_truth": "Los Gerentes de Campo realizaron más de 14,000 inspecciones.",
+        "language": "es",
+        "category": "field_operations"
+    },
+    {
+        "query": "What were the operational costs for Field Managers in the East region?",
+        "ground_truth": "Operational costs varied across regions, with East region field operations remaining within enterprise targets.",
+        "language": "en",
+        "category": "costs"
+    },
+    {
+        "query": "Which product category achieved the highest customer satisfaction?",
+        "ground_truth": "Inspection Services and Field Analytics achieved strong customer satisfaction scores.",
+        "language": "en",
+        "category": "customer_metrics"
+    },
+    {
+        "query": "¿Qué mejoras estratégicas fueron recomendadas para la empresa?",
+        "ground_truth": "La empresa debe invertir en automatización de campo y análisis predictivo.",
+        "language": "es",
+        "category": "strategy"
+    },
+    {
+        "query": "What recommendations were provided for future enterprise growth?",
+        "ground_truth": "The report recommended predictive analytics, workforce optimization, and automation tools.",
+        "language": "en",
+        "category": "strategy"
+    }
 ]
+

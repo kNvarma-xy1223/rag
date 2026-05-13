@@ -7,18 +7,13 @@ class Settings(BaseSettings):
     # ── OpenAI Resource (AzureOpenAI client) ──────────────────────────────────
     openai_endpoint: str = ""
     openai_api_key: str = ""
-
-    # Responses API (gpt-5.4-pro) needs 2025-03-01-preview or later
     openai_api_version: str = "2025-04-01-preview"
-
-    # Embedding API works best on the stable 2024-02-01 version
     openai_embedding_api_version: str = "2024-02-01"
-
     openai_embedding_model: str = "text-embedding-3-large"
     openai_embedding_dim: int = 3072
     openai_chat_model: str = "gpt-5.4-pro"
 
-    # ── Cohere Resource (regular OpenAI client) ───────────────────────────────
+    # ── Cohere Resource ───────────────────────────────────────────────────────
     cohere_endpoint: str = ""
     cohere_api_key: str = ""
     cohere_embedding_model: str = "embed-v-4-0"
@@ -32,31 +27,35 @@ class Settings(BaseSettings):
     pinecone_region: str = "us-east-1"
 
     # ── RAG ───────────────────────────────────────────────────────────────────
-    # TOP_K is intentionally configured here in code, not in .env.
-    # Change this value directly in this file to adjust the default retrieval depth.
     top_k: int = 5
     chunk_size: int = 600
     chunk_overlap: int = 80
     similarity_threshold: float = 0.3
 
-    # ── RAGAS Evaluation ──────────────────────────────────────────────────────
-    # The LLM used for RAGAS judge calls (faithfulness, relevancy, etc.)
-    # Defaults to the same Azure chat model; override via RAGAS_JUDGE_MODEL in .env.
-    ragas_judge_model: str = ""          # falls back to openai_chat_model when empty
-    ragas_judge_api_version: str = "2025-04-01-preview"
+    # ── Retrieval pool (production) ───────────────────────────────────────────
+    # pinecone_retrieval_k: how many candidates to pull from Pinecone BEFORE
+    #   post-filtering. Set large enough to cover your biggest dataset.
+    #   Pinecone hard limit is 10 000; 500 is safe and fast for most datasets.
+    # max_final_k: hard ceiling on chunks sent to the LLM (token-budget guard).
+    #   gpt-5.4-pro context = 128 k tokens; 1 chunk ≈ 200 tokens → 100 chunks
+    #   uses ~20 k tokens, well within budget.
+    pinecone_retrieval_k: int = 500
+    max_final_k: int = 100
 
-    # Maximum tokens RAGAS judge is allowed to generate per call
-    ragas_max_tokens: int = 1024
+    # ── DeepEval Evaluation ───────────────────────────────────────────────────
+    # Judge model for all DeepEval metric calls.
+    # Override via DEEPEVAL_JUDGE_MODEL in .env; defaults to gpt-5.4-nano.
+    deepeval_judge_model: str = "gpt-5.4-nano"
+    deepeval_judge_api_version: str = "2024-12-01-preview"
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
         extra = "ignore"
 
-    # Convenience: resolve the actual judge model name at runtime
     @property
-    def resolved_ragas_judge_model(self) -> str:
-        return self.ragas_judge_model or self.openai_chat_model
+    def resolved_deepeval_judge_model(self) -> str:
+        return self.deepeval_judge_model or self.openai_chat_model
 
 
 @lru_cache()
