@@ -6,17 +6,6 @@ Pipeline:
                                                     ├── semantic_query        (clean text for embedding)
                                                     ├── metadata_filters      (Pinecone $eq / $gte / $lte)
                                                     └── numeric_post_filters  (safety-net after retrieval)
-
-Place this file at:
-  your_project/
-  └── rag/
-      └── query_parser.py      ← HERE
-
-It uses the same settings keys already in your project:
-  settings.openai_api_key
-  settings.openai_endpoint
-  settings.openai_chat_model          (should be your gpt-5.4-pro deployment name)
-  settings.openai_api_version         (should be "2025-04-01-preview" for gpt-5.4-pro)
 """
 
 import json
@@ -33,17 +22,17 @@ logger = logging.getLogger(__name__)
 @dataclass
 class NumericCondition:
     """A single numeric comparison: field OP value  (e.g. performance_score >= 85)."""
-    field: str      # safe_meta_key name stored in Pinecone, e.g. "performance_score"
-    op: str         # "gt" | "gte" | "lt" | "lte" | "eq"
+    field: str   # safe_meta_key matching Pinecone metadata, e.g. "performance_score"
+    op: str      # "gt" | "gte" | "lt" | "lte" | "eq"
     value: float
 
 
 @dataclass
 class ParsedQuery:
-    semantic_query: str                                    # clean text → embedding
-    metadata_filters: Optional[Dict[str, Any]] = None     # Pinecone filter dict
+    semantic_query: str
+    metadata_filters: Optional[Dict[str, Any]] = None
     numeric_post_filters: List[NumericCondition] = field(default_factory=list)
-    raw_filters_extracted: Dict[str, Any] = field(default_factory=dict)  # for debug/SSE
+    raw_filters_extracted: Dict[str, Any] = field(default_factory=dict)
 
 
 # ── Pinecone filter builder ───────────────────────────────────────────────────
@@ -58,9 +47,9 @@ def _build_pinecone_filter(
 ) -> Optional[Dict[str, Any]]:
     """
     Combine categorical equality + numeric range + optional language into one
-    Pinecone metadata filter dict.
+    Pinecone filter dict.
 
-    Example output:
+    Example:
       {"$and": [
           {"role":              {"$eq": "Sales Manager"}},
           {"region":            {"$eq": "North"}},
@@ -85,58 +74,64 @@ def _build_pinecone_filter(
     return {"$and": clauses}
 
 
-# ── LLM prompt ────────────────────────────────────────────────────────────────
+# ── LLM system prompt ─────────────────────────────────────────────────────────
 
-_SYSTEM_PROMPT = """You are a query-parsing assistant for an HR/Sales analytics RAG system.
+_SYSTEM_PROMPT = """You are a query-parsing assistant for an enterprise analytics RAG system.
 
 Given a natural-language question, extract structured filter information.
 
-Return ONLY a JSON object (no markdown, no explanation):
+Return ONLY valid JSON (no markdown fences, no explanation):
 {
-  "semantic_query": "<clean question with all filter constraints removed, for embedding search>",
-  "eq_filters": {
-    "<key>": "<value>"
-  },
+  "semantic_query": "<clean question stripped of all filter constraints, for embedding search>",
+  "eq_filters": { "<key>": "<value>" },
   "numeric_conditions": [
     {"field": "<safe_field_name>", "op": "<gt|gte|lt|lte|eq>", "value": <number>}
   ],
   "top_k_hint": <integer or null>
 }
 
-Rules:
-1. semantic_query: strip all constraints, keep the core topic.
-   "Sales Managers in the North region with performance score above 85"
-   → "Sales Managers with high performance scores"
+RULES:
 
-2. eq_filters keys (use EXACTLY these key names — they match Pinecone metadata):
-   role, region, department, language, doc_type, source_type
+1. semantic_query — remove all filter constraints, keep the core topic.
+   "Sales Managers in North region with performance score above 85"
+   → "employees with high performance scores"
+
+2. eq_filters — use EXACTLY these key names (they match Pinecone metadata):
+   role, region, department, status, category, language, doc_type, source_type
    Normalise values to Title Case.
    Examples:
-     "sales managers"      → role: "Sales Manager"
-     "north region"        → region: "North"
-     "HR department"       → department: "HR"
+     "sales managers"   → {"role": "Sales Manager"}
+     "north region"     → {"region": "North"}
+     "field managers"   → {"role": "Field Manager"}
+     "HR department"    → {"department": "Hr"}
 
-3. numeric_conditions field names (safe_meta_key format, matches Pinecone metadata):
-   performance_score, salary, revenue_usd, field_visits,
-   customer_satisfaction, target_achievement, operational_cost
+3. numeric_conditions — field names use safe_meta_key format (snake_case, lowercase).
+   Common fields: performance_score, salary, revenue_usd, field_visits,
+                  customer_satisfaction, target_achievement_pct, operational_cost_usd,
+                  score, rating, quantity, price, amount, percentage, count
+   For any numeric field mentioned, infer the most likely safe key name.
    Operator mapping:
-     "above 85" / "greater than 85" / "more than 85"  → gte 85.0
-     "below 90" / "less than 90" / "under 90"          → lt  90.0
-     "at least 80" / "minimum 80"                      → gte 80.0
-     "exactly 90"                                       → eq  90.0
-     "between 80 and 90" → TWO conditions: gte 80.0 AND lte 90.0
+     "above N" / "greater than N" / "more than N" / "over N"  → gte N
+     "below N" / "less than N" / "under N"                    → lt  N
+     "at least N" / "minimum N" / "≥ N"                       → gte N
+     "at most N" / "maximum N" / "≤ N"                        → lte N
+     "exactly N" / "equal to N" / "= N"                       → eq  N
+     "between N and M" → TWO conditions: gte N AND lte M
 
-4. top_k_hint: integer if user asked for a specific count ("top 3", "first 5"), else null.
+4. top_k_hint — integer if user specified a count ("top 3", "first 5", "show 10"), else null.
 
-Examples:
+EXAMPLES:
   Input:  "Show me Sales Managers in the North region with performance score above 85"
-  Output: {"semantic_query": "Sales Managers with high performance scores", "eq_filters": {"role": "Sales Manager", "region": "North"}, "numeric_conditions": [{"field": "performance_score", "op": "gte", "value": 85.0}], "top_k_hint": null}
+  Output: {"semantic_query": "employees with high performance scores", "eq_filters": {"role": "Sales Manager", "region": "North"}, "numeric_conditions": [{"field": "performance_score", "op": "gte", "value": 85.0}], "top_k_hint": null}
 
-  Input:  "Which employees in HR have salary below 60000?"
-  Output: {"semantic_query": "employees with low salary", "eq_filters": {"department": "HR"}, "numeric_conditions": [{"field": "salary", "op": "lt", "value": 60000.0}], "top_k_hint": null}
+  Input:  "Which Field Managers have customer satisfaction below 3?"
+  Output: {"semantic_query": "employees with low customer satisfaction", "eq_filters": {"role": "Field Manager"}, "numeric_conditions": [{"field": "customer_satisfaction", "op": "lt", "value": 3.0}], "top_k_hint": null}
 
-  Input:  "What was Q2 revenue?"
-  Output: {"semantic_query": "Q2 revenue", "eq_filters": {}, "numeric_conditions": [], "top_k_hint": null}
+  Input:  "Top 5 employees in South region by revenue"
+  Output: {"semantic_query": "employees with high revenue", "eq_filters": {"region": "South"}, "numeric_conditions": [], "top_k_hint": 5}
+
+  Input:  "What was Q2 revenue growth?"
+  Output: {"semantic_query": "Q2 revenue growth", "eq_filters": {}, "numeric_conditions": [], "top_k_hint": null}
 """
 
 
@@ -147,16 +142,11 @@ async def parse_query(
     language: Optional[str] = None,
 ) -> ParsedQuery:
     """
-    Call Azure OpenAI (gpt-5.4-pro) to extract structured filters from a
-    natural-language query.
+    Call Azure OpenAI (gpt-5.4-pro) to extract structured filters.
 
-    Falls back gracefully to a passthrough ParsedQuery if:
-      - settings are missing
-      - the LLM call fails
-      - the response is not valid JSON
-    So the pipeline NEVER crashes due to parsing failure.
+    Falls back to passthrough ParsedQuery on any failure so the pipeline
+    never crashes due to parsing errors.
     """
-    # Lazy import to avoid circular dependencies at module load time
     try:
         from config.settings import settings
         from openai import AsyncAzureOpenAI
@@ -164,16 +154,13 @@ async def parse_query(
         client = AsyncAzureOpenAI(
             api_key=settings.openai_api_key,
             azure_endpoint=settings.openai_endpoint,
-            # gpt-5.4-pro requires the Responses API version
             api_version=getattr(settings, "openai_api_version", "2025-04-01-preview"),
         )
         model = getattr(settings, "openai_chat_model", "gpt-5.4-pro")
-
     except Exception as exc:
-        logger.warning("query_parser: could not initialise Azure client (%s) — passthrough", exc)
+        logger.warning("query_parser: could not initialise client (%s) — passthrough", exc)
         return ParsedQuery(semantic_query=raw_query)
 
-    # ── Call the LLM via Responses API (gpt-5.4-pro requires this) ──────────
     try:
         response = await client.responses.create(
             model=model,
@@ -186,9 +173,7 @@ async def parse_query(
         logger.warning("query_parser: LLM call failed (%s) — passthrough", exc)
         return ParsedQuery(semantic_query=raw_query)
 
-    # ── Parse JSON response ───────────────────────────────────────────────────
     try:
-        # Strip accidental markdown fences the model might add
         clean = re.sub(r"^```[a-z]*\n?", "", raw_text.strip())
         clean = re.sub(r"\n?```$", "", clean)
         parsed_json = json.loads(clean)
@@ -196,7 +181,6 @@ async def parse_query(
         logger.warning("query_parser: JSON parse failed (%s) raw=%r — passthrough", exc, raw_text[:200])
         return ParsedQuery(semantic_query=raw_query)
 
-    # ── Build structured result ───────────────────────────────────────────────
     semantic_query: str = parsed_json.get("semantic_query") or raw_query
     eq_filters: Dict[str, str] = parsed_json.get("eq_filters") or {}
     raw_numeric: List[Dict] = parsed_json.get("numeric_conditions") or []
@@ -211,20 +195,20 @@ async def parse_query(
             ))
         except (KeyError, ValueError, TypeError) as exc:
             logger.warning("query_parser: skipping bad numeric condition %r (%s)", nc, exc)
-            continue
 
     pinecone_filter = _build_pinecone_filter(eq_filters, numeric_conditions, language)
 
     logger.info(
-        "query_parser: '%s' → semantic='%s' filters=%s numeric=%s",
+        "query_parser: '%s' → semantic='%s' eq=%s numeric=%s filter=%s",
         raw_query, semantic_query, eq_filters,
         [(c.field, c.op, c.value) for c in numeric_conditions],
+        pinecone_filter,
     )
 
     return ParsedQuery(
         semantic_query=semantic_query,
         metadata_filters=pinecone_filter,
-        numeric_post_filters=numeric_conditions,  # also used as post-filter safety net
+        numeric_post_filters=numeric_conditions,
         raw_filters_extracted={
             "eq_filters":         eq_filters,
             "numeric_conditions": [vars(c) for c in numeric_conditions],
@@ -242,12 +226,9 @@ def apply_post_filters(
     """
     Applied AFTER Pinecone retrieval as a safety net.
 
-    Handles cases where:
-      - The field wasn't indexed as a numeric scalar in Pinecone
-      - The value was stored as a string instead of float
-      - Pinecone's filter missed an edge case
-
-    chunks: list of result dicts, each with a "metadata" sub-dict.
+    Handles cases where the Pinecone metadata filter was not precise enough
+    or the field value was stored in an unexpected format. Silently skips
+    chunks that are missing the filtered field (non-row documents like summaries).
     """
     if not conditions:
         return chunks
@@ -257,8 +238,7 @@ def apply_post_filters(
         for cond in conditions:
             raw = meta.get(cond.field)
             if raw is None:
-                # Field absent from this chunk — don't filter it out,
-                # let the LLM decide based on context
+                # Field absent (e.g. summary doc) — let it through; LLM will handle
                 continue
             try:
                 val = float(raw)
