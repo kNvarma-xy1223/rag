@@ -1,11 +1,3 @@
-"""
-rag/generator.py
-
-RAG response generation via Azure OpenAI Responses API.
-Non-streaming variants used by RAGAS evaluation.
-Streaming variants consumed by FastAPI StreamingResponse.
-"""
-
 import json
 import time
 from collections.abc import AsyncGenerator
@@ -22,105 +14,175 @@ _RESPONSES_API_VERSION = "2025-04-01-preview"
 _client: Optional[AsyncAzureOpenAI] = None
 
 
+# ─────────────────────────────────────────────
+# Azure OpenAI Client
+# ─────────────────────────────────────────────
+
 def _get_client() -> AsyncAzureOpenAI:
     global _client
+
     if _client is None:
         _client = AsyncAzureOpenAI(
             api_key=settings.openai_api_key,
             azure_endpoint=settings.openai_endpoint,
             api_version=_RESPONSES_API_VERSION,
         )
+
     return _client
 
+
+# ─────────────────────────────────────────────
+# SSE Helper
+# ─────────────────────────────────────────────
 
 def _sse(data: dict) -> str:
     return f"data: {json.dumps(data)}\n\n"
 
 
-# ── System prompts ────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# Lightweight Fast System Prompt
+# ─────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are an enterprise-grade multilingual RAG assistant.
+SYSTEM_PROMPT = """
+You are an enterprise multilingual RAG assistant.
 
-Strict rules:
-1. Ground every statement exclusively in the numbered context blocks below.
-2. Cite every factual claim inline using [N] where N is the context block number.
-3. Reproduce numerical values, percentages, dates, and KPIs exactly as they appear in context.
-4. Deliver a thorough, well-structured response of at least 6-8 sentences.
-5. FORMAT YOUR ENTIRE RESPONSE IN MARKDOWN:
-   - Use ## or ### headings for major sections
-   - Use **bold** for key terms and important figures
-   - Use bullet lists (-) or numbered lists for items/metrics/steps
-   - Use tables for comparisons or listing multiple records
-6. When listing employees or records, include ALL records from the context that match.
-   Do NOT omit or summarise — list every matching record explicitly.
-7. State clearly what is and isn't covered by the context.
-8. Respond in the same language as the question (English or Spanish).
-9. Never invent figures, names, or conclusions not in the context.
-"""
-
-CHAT_SYSTEM_PROMPT = """You are an enterprise-grade multilingual RAG assistant in a multi-turn conversation.
-
-Strict rules:
-1. Ground every statement exclusively in the numbered context blocks below.
-2. Cite every factual claim inline using [N].
-3. Use conversation history for context, but draw facts ONLY from current context blocks.
-4. Deliver a thorough, well-structured response of at least 6-8 sentences.
-5. FORMAT YOUR ENTIRE RESPONSE IN MARKDOWN:
-   - Use ## or ### headings for major sections
-   - Use **bold** for key terms and important figures
-   - Use bullet lists or numbered lists for items/metrics
-   - Use tables for comparisons or listing multiple records
-6. When listing employees or records, include ALL records from the context that match.
-   Do NOT omit or summarise — list every matching record explicitly.
-7. Maintain a professional yet conversational tone.
-8. Respond in the same language as the question (English or Spanish).
-9. Never invent figures, names, or conclusions not in the context.
+Rules:
+- Use ONLY retrieved context.
+- Never hallucinate or infer missing facts.
+- Cite factual claims using [N].
+- Preserve exact numbers and KPIs.
+- Respond in user's language.
+- Keep responses concise and professional.
+- Avoid repetition.
+- Use markdown only when useful.
+- If information is missing, say:
+  "Insufficient information found in the retrieved context."
 """
 
 
-# ── Context builder ───────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# Deduplicate Chunks
+# ─────────────────────────────────────────────
 
-def _build_context(chunks: List[Dict[str, Any]]) -> tuple[str, List[Dict[str, Any]]]:
-    citations: List[Dict[str, Any]] = []
-    parts: List[str] = []
+def _deduplicate_chunks(
+    chunks: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+
+    seen = set()
+    unique_chunks = []
+
+    for chunk in chunks:
+
+        normalized = (
+            " ".join(chunk["text"].split())
+            .strip()
+            .lower()
+        )
+
+        if normalized not in seen:
+            seen.add(normalized)
+            unique_chunks.append(chunk)
+
+    return unique_chunks
+
+
+# ─────────────────────────────────────────────
+# Context Builder
+# ─────────────────────────────────────────────
+
+def _build_context(
+    chunks: List[Dict[str, Any]]
+) -> tuple[str, List[Dict[str, Any]]]:
+
+    citations = []
+    parts = []
+
+    chunks = _deduplicate_chunks(chunks)
 
     for i, chunk in enumerate(chunks, 1):
-        meta   = chunk["metadata"]
+
+        meta = chunk["metadata"]
+
         source = meta.get("source", "unknown")
 
-        # Determine location label
         if "page" in meta:
             location = f"page {meta['page']}"
+
         elif meta.get("doc_type") == "row":
-            row_num = meta.get("row_number", "?")
-            location = f"row {row_num}"
-        elif meta.get("doc_type") == "summary":
-            location = "summary"
+            location = f"row {meta.get('row_number', '?')}"
+
         else:
             location = f"chunk {meta.get('chunk_index', i)}"
 
-        parts.append(f"[{i}] Source: {source} ({location})\n{chunk['text']}")
+        # aggressive context compression
+        text = chunk["text"].strip()[:1200]
+
+        parts.append(
+            f"[{i}] Source: {source} ({location})\n{text}"
+        )
+
         citations.append({
-            "index":       i,
-            "source":      source,
-            "location":    location,
-            "score":       chunk["score"],
-            "preview":     chunk["text"][:300],
-            "source_type": meta.get("source_type", "unknown"),
+            "index": i,
+            "source": source,
+            "location": location,
         })
 
     return "\n\n---\n\n".join(parts), citations
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# History Formatter
+# ─────────────────────────────────────────────
 
-def _format_history(history: List[Dict[str, str]]) -> str:
+def _format_history(
+    history: List[Dict[str, str]]
+) -> str:
+
     lines = []
-    for msg in history[-6:]:
-        role = "User" if msg.get("role") == "user" else "Assistant"
-        lines.append(f"{role}: {msg.get('content', '')}")
+
+    for msg in history[-4:]:
+
+        role = (
+            "User"
+            if msg.get("role") == "user"
+            else "Assistant"
+        )
+
+        content = msg.get("content", "")
+
+        lines.append(f"{role}: {content}")
+
     return "\n".join(lines)
 
+
+# ─────────────────────────────────────────────
+# Query Complexity Router
+# ─────────────────────────────────────────────
+
+def _determine_final_k(query: str) -> int:
+
+    query = query.lower()
+
+    analytical_keywords = [
+        "compare",
+        "analysis",
+        "trend",
+        "summary",
+        "performance",
+        "regional",
+        "ranking",
+        "insights",
+    ]
+
+    if any(word in query for word in analytical_keywords):
+        return 6
+
+    return 4
+
+
+# ─────────────────────────────────────────────
+# Retrieval Pipeline
+# ─────────────────────────────────────────────
 
 async def _fetch_chunks(
     query: str,
@@ -128,35 +190,68 @@ async def _fetch_chunks(
     filters: Optional[Dict[str, Any]],
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-) -> tuple[List[Dict[str, Any]], float, bool]:
-    """
-    Retrieve → post-filter → trim.
+):
 
-    Pool sizing: final_k × 100 (see retriever._pool_k).
-    This ensures all matching CSV rows are candidates before trimming to final_k.
+    effective_final_k = (
+        final_k
+        if final_k is not None
+        else _determine_final_k(query)
+    )
 
-    Fallback chain:
-      1. Pinecone with metadata filters (score threshold disabled for filtered queries)
-      2. Pinecone semantic-only if filtered search returns 0 results
-      3. If numeric post_filters wipe everything → keep semantic results
-    """
-    effective_final_k = final_k if final_k is not None else settings.top_k
+    effective_final_k = min(effective_final_k, 6)
+
     pool_k = _pool_k(effective_final_k)
 
-    retrieval = await retrieve(query, embedding_model, pool_k, filters)
-    chunks    = retrieval["results"]
+    retrieval = await retrieve(
+        query=query,
+        embedding_model=embedding_model,
+        top_k=pool_k,
+        filters=filters,
+    )
 
+    chunks = retrieval["results"]
+
+    # numeric filtering
     if post_filters:
-        filtered = apply_post_filters(chunks, post_filters)
-        # If post-filters wiped everything, keep original results so LLM can caveat
+
+        filtered = apply_post_filters(
+            chunks,
+            post_filters,
+        )
+
         chunks = filtered if filtered else chunks
 
     chunks = chunks[:effective_final_k]
 
-    return chunks, retrieval["latency_ms"], retrieval["filter_fallback"]
+    return (
+        chunks,
+        retrieval["latency_ms"],
+        retrieval["filter_fallback"],
+    )
 
 
-# ── Non-streaming (used by RAGAS evaluation) ──────────────────────────────────
+# ─────────────────────────────────────────────
+# Shared Completion Call
+# ─────────────────────────────────────────────
+
+async def _generate_completion(
+    input_text: str,
+):
+
+    client = _get_client()
+
+    return await client.responses.create(
+        model=settings.openai_chat_model,
+        instructions=SYSTEM_PROMPT,
+        input=input_text,
+        temperature=0,
+        max_output_tokens=500,
+    )
+
+
+# ─────────────────────────────────────────────
+# Non Streaming Response
+# ─────────────────────────────────────────────
 
 async def generate_response(
     query: str,
@@ -164,57 +259,102 @@ async def generate_response(
     filters: Optional[Dict[str, Any]] = None,
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-    top_k: Optional[int] = None,  # legacy compat, ignored
+    top_k: Optional[int] = None,
 ) -> Dict[str, Any]:
-    chunks, retrieval_ms, filter_fallback = await _fetch_chunks(
-        query, embedding_model, filters, post_filters, final_k
+
+    (
+        chunks,
+        retrieval_ms,
+        filter_fallback,
+    ) = await _fetch_chunks(
+        query,
+        embedding_model,
+        filters,
+        post_filters,
+        final_k,
     )
 
     if not chunks:
+
         return {
-            "answer":                "No relevant documents found in the knowledge base.",
-            "citations":             [],
-            "chunks":                [],
-            "retrieval_latency_ms":  retrieval_ms,
+            "answer": (
+                "Insufficient information found "
+                "in the retrieved context."
+            ),
+            "citations": [],
+            "chunks": [],
+            "retrieval_latency_ms": retrieval_ms,
             "generation_latency_ms": 0,
-            "embedding_model":       embedding_model,
-            "filter_fallback":       filter_fallback,
-            "tokens_used":           None,
+            "embedding_model": embedding_model,
+            "filter_fallback": filter_fallback,
+            "tokens_used": None,
         }
 
     context, citations = _build_context(chunks)
 
-    t0 = time.perf_counter()
-    response = await _get_client().responses.create(
-        model=settings.openai_chat_model,
-        instructions=SYSTEM_PROMPT,
-        input=f"Context:\n{context}\n\nQuestion: {query}",
-        max_output_tokens=2000,
-    )
-    gen_ms = round((time.perf_counter() - t0) * 1000, 2)
+    input_text = f"""
+Context:
+{context}
 
-    answer = response.output_text
-    usage  = response.usage
-    prompt_tokens     = getattr(usage, "input_tokens",  0)
-    completion_tokens = getattr(usage, "output_tokens", 0)
-    total_tokens      = getattr(usage, "total_tokens",  prompt_tokens + completion_tokens)
+Question:
+{query}
+"""
+
+    t0 = time.perf_counter()
+
+    response = await _generate_completion(
+        input_text
+    )
+
+    generation_ms = round(
+        (time.perf_counter() - t0) * 1000,
+        2,
+    )
+
+    answer = response.output_text.strip()
+
+    usage = response.usage
+
+    prompt_tokens = getattr(
+        usage,
+        "input_tokens",
+        0,
+    )
+
+    completion_tokens = getattr(
+        usage,
+        "output_tokens",
+        0,
+    )
+
+    total_tokens = getattr(
+        usage,
+        "total_tokens",
+        prompt_tokens + completion_tokens,
+    )
 
     return {
-        "answer":                answer,
-        "citations":             citations,
-        "chunks":                chunks,
-        "retrieval_latency_ms":  retrieval_ms,
-        "generation_latency_ms": gen_ms,
-        "total_latency_ms":      retrieval_ms + gen_ms,
-        "embedding_model":       embedding_model,
-        "filter_fallback":       filter_fallback,
+        "answer": answer,
+        "citations": citations,
+        "chunks": chunks,
+        "retrieval_latency_ms": retrieval_ms,
+        "generation_latency_ms": generation_ms,
+        "total_latency_ms": (
+            retrieval_ms + generation_ms
+        ),
+        "embedding_model": embedding_model,
+        "filter_fallback": filter_fallback,
         "tokens_used": {
-            "prompt":     prompt_tokens,
+            "prompt": prompt_tokens,
             "completion": completion_tokens,
-            "total":      total_tokens,
+            "total": total_tokens,
         },
     }
 
+
+# ─────────────────────────────────────────────
+# Chat Response
+# ─────────────────────────────────────────────
 
 async def generate_chat_response(
     query: str,
@@ -223,67 +363,107 @@ async def generate_chat_response(
     filters: Optional[Dict[str, Any]] = None,
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-    top_k: Optional[int] = None,  # legacy compat, ignored
-) -> Dict[str, Any]:
-    chunks, retrieval_ms, filter_fallback = await _fetch_chunks(
-        query, embedding_model, filters, post_filters, final_k
+    top_k: Optional[int] = None,
+):
+
+    (
+        chunks,
+        retrieval_ms,
+        filter_fallback,
+    ) = await _fetch_chunks(
+        query,
+        embedding_model,
+        filters,
+        post_filters,
+        final_k,
     )
 
     if not chunks:
+
         return {
-            "answer":                "No relevant documents found in the knowledge base.",
-            "citations":             [],
-            "chunks":                [],
-            "retrieval_latency_ms":  retrieval_ms,
+            "answer": (
+                "Insufficient information found "
+                "in the retrieved context."
+            ),
+            "citations": [],
+            "chunks": [],
+            "retrieval_latency_ms": retrieval_ms,
             "generation_latency_ms": 0,
-            "embedding_model":       embedding_model,
-            "filter_fallback":       filter_fallback,
-            "tokens_used":           None,
+            "embedding_model": embedding_model,
+            "filter_fallback": filter_fallback,
+            "tokens_used": None,
         }
 
     context, citations = _build_context(chunks)
+
     history_text = _format_history(history)
 
-    input_text = (
-        f"Context:\n{context}\n\n"
-        f"Conversation so far:\n{history_text}\n\nUser: {query}"
-        if history_text
-        else f"Context:\n{context}\n\nQuestion: {query}"
-    )
+    input_text = f"""
+Context:
+{context}
+
+Conversation:
+{history_text}
+
+Question:
+{query}
+"""
 
     t0 = time.perf_counter()
-    response = await _get_client().responses.create(
-        model=settings.openai_chat_model,
-        instructions=CHAT_SYSTEM_PROMPT,
-        input=input_text,
-        max_output_tokens=2000,
-    )
-    gen_ms = round((time.perf_counter() - t0) * 1000, 2)
 
-    answer = response.output_text
-    usage  = response.usage
-    prompt_tokens     = getattr(usage, "input_tokens",  0)
-    completion_tokens = getattr(usage, "output_tokens", 0)
-    total_tokens      = getattr(usage, "total_tokens",  prompt_tokens + completion_tokens)
+    response = await _generate_completion(
+        input_text
+    )
+
+    generation_ms = round(
+        (time.perf_counter() - t0) * 1000,
+        2,
+    )
+
+    answer = response.output_text.strip()
+
+    usage = response.usage
+
+    prompt_tokens = getattr(
+        usage,
+        "input_tokens",
+        0,
+    )
+
+    completion_tokens = getattr(
+        usage,
+        "output_tokens",
+        0,
+    )
+
+    total_tokens = getattr(
+        usage,
+        "total_tokens",
+        prompt_tokens + completion_tokens,
+    )
 
     return {
-        "answer":                answer,
-        "citations":             citations,
-        "chunks":                chunks,
-        "retrieval_latency_ms":  retrieval_ms,
-        "generation_latency_ms": gen_ms,
-        "total_latency_ms":      retrieval_ms + gen_ms,
-        "embedding_model":       embedding_model,
-        "filter_fallback":       filter_fallback,
+        "answer": answer,
+        "citations": citations,
+        "chunks": chunks,
+        "retrieval_latency_ms": retrieval_ms,
+        "generation_latency_ms": generation_ms,
+        "total_latency_ms": (
+            retrieval_ms + generation_ms
+        ),
+        "embedding_model": embedding_model,
+        "filter_fallback": filter_fallback,
         "tokens_used": {
-            "prompt":     prompt_tokens,
+            "prompt": prompt_tokens,
             "completion": completion_tokens,
-            "total":      total_tokens,
+            "total": total_tokens,
         },
     }
 
 
-# ── Streaming versions ────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# Streaming Response
+# ─────────────────────────────────────────────
 
 async def stream_generate_response(
     query: str,
@@ -291,74 +471,143 @@ async def stream_generate_response(
     filters: Optional[Dict[str, Any]] = None,
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-    top_k: Optional[int] = None,  # legacy compat, ignored
+    top_k: Optional[int] = None,
 ) -> AsyncGenerator[str, None]:
-    """
-    SSE event sequence:
-      {"type":"citations", "citations":[...], "retrieval_latency_ms": N, "filter_fallback": bool}
-      {"type":"token",     "content": "..."}  × many
-      {"type":"done",      "generation_latency_ms": N, "tokens_used": {...}}
-      {"type":"error",     "message": "..."}
-    """
-    chunks, retrieval_ms, filter_fallback = await _fetch_chunks(
-        query, embedding_model, filters, post_filters, final_k
+
+    (
+        chunks,
+        retrieval_ms,
+        filter_fallback,
+    ) = await _fetch_chunks(
+        query,
+        embedding_model,
+        filters,
+        post_filters,
+        final_k,
     )
 
     if not chunks:
-        yield _sse({"type": "error", "message": "No relevant documents found in the knowledge base."})
+
+        yield _sse({
+            "type": "error",
+            "message": (
+                "Insufficient information found "
+                "in the retrieved context."
+            ),
+        })
+
         return
 
     context, citations = _build_context(chunks)
 
     yield _sse({
-        "type":                 "citations",
-        "citations":            citations,
+        "type": "citations",
+        "citations": citations,
         "retrieval_latency_ms": retrieval_ms,
-        "embedding_model":      embedding_model,
-        "filter_fallback":      filter_fallback,
+        "filter_fallback": filter_fallback,
     })
 
+    input_text = f"""
+Context:
+{context}
+
+Question:
+{query}
+"""
+
+    client = _get_client()
+
     t0 = time.perf_counter()
-    prompt_tokens = completion_tokens = total_tokens = 0
+
+    prompt_tokens = 0
+    completion_tokens = 0
+    total_tokens = 0
 
     try:
-        stream = await _get_client().responses.create(
+
+        stream = await client.responses.create(
             model=settings.openai_chat_model,
             instructions=SYSTEM_PROMPT,
-            input=f"Context:\n{context}\n\nQuestion: {query}",
-            max_output_tokens=2000,
+            input=input_text,
+            temperature=0,
+            max_output_tokens=500,
             stream=True,
         )
+
         async for event in stream:
-            etype = getattr(event, "type", "")
-            if etype == "response.output_text.delta":
+
+            event_type = getattr(event, "type", "")
+
+            if event_type == "response.output_text.delta":
+
                 delta = getattr(event, "delta", "")
+
                 if delta:
-                    yield _sse({"type": "token", "content": delta})
-            elif etype == "response.completed":
-                resp = getattr(event, "response", None)
-                if resp:
-                    usage = getattr(resp, "usage", None)
+
+                    yield _sse({
+                        "type": "token",
+                        "content": delta,
+                    })
+
+            elif event_type == "response.completed":
+
+                response = getattr(event, "response", None)
+
+                if response:
+
+                    usage = getattr(response, "usage", None)
+
                     if usage:
-                        prompt_tokens     = getattr(usage, "input_tokens",  0)
-                        completion_tokens = getattr(usage, "output_tokens", 0)
-                        total_tokens      = getattr(usage, "total_tokens",  prompt_tokens + completion_tokens)
+
+                        prompt_tokens = getattr(
+                            usage,
+                            "input_tokens",
+                            0,
+                        )
+
+                        completion_tokens = getattr(
+                            usage,
+                            "output_tokens",
+                            0,
+                        )
+
+                        total_tokens = getattr(
+                            usage,
+                            "total_tokens",
+                            prompt_tokens + completion_tokens,
+                        )
+
     except Exception as exc:
-        yield _sse({"type": "error", "message": str(exc)})
+
+        yield _sse({
+            "type": "error",
+            "message": str(exc),
+        })
+
         return
 
-    gen_ms = round((time.perf_counter() - t0) * 1000, 2)
+    generation_ms = round(
+        (time.perf_counter() - t0) * 1000,
+        2,
+    )
+
     yield _sse({
-        "type":                  "done",
-        "generation_latency_ms": gen_ms,
-        "total_latency_ms":      retrieval_ms + gen_ms,
+        "type": "done",
+        "generation_latency_ms": generation_ms,
+        "total_latency_ms": (
+            retrieval_ms + generation_ms
+        ),
         "tokens_used": {
-            "prompt":     prompt_tokens,
+            "prompt": prompt_tokens,
             "completion": completion_tokens,
-            "total":      total_tokens,
+            "total": total_tokens,
         },
     })
 
+
+# ─────────────────────────────────────────────
+# Streaming Chat Response
+# ─────────────────────────────────────────────
 
 async def stream_generate_chat_response(
     query: str,
@@ -367,71 +616,140 @@ async def stream_generate_chat_response(
     filters: Optional[Dict[str, Any]] = None,
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-    top_k: Optional[int] = None,  # legacy compat, ignored
+    top_k: Optional[int] = None,
 ) -> AsyncGenerator[str, None]:
-    chunks, retrieval_ms, filter_fallback = await _fetch_chunks(
-        query, embedding_model, filters, post_filters, final_k
+
+    (
+        chunks,
+        retrieval_ms,
+        filter_fallback,
+    ) = await _fetch_chunks(
+        query,
+        embedding_model,
+        filters,
+        post_filters,
+        final_k,
     )
 
     if not chunks:
-        yield _sse({"type": "error", "message": "No relevant documents found in the knowledge base."})
+
+        yield _sse({
+            "type": "error",
+            "message": (
+                "Insufficient information found "
+                "in the retrieved context."
+            ),
+        })
+
         return
 
     context, citations = _build_context(chunks)
 
     yield _sse({
-        "type":                 "citations",
-        "citations":            citations,
+        "type": "citations",
+        "citations": citations,
         "retrieval_latency_ms": retrieval_ms,
-        "embedding_model":      embedding_model,
-        "filter_fallback":      filter_fallback,
+        "filter_fallback": filter_fallback,
     })
 
     history_text = _format_history(history)
-    input_text = (
-        f"Context:\n{context}\n\n"
-        f"Conversation so far:\n{history_text}\n\nUser: {query}"
-        if history_text
-        else f"Context:\n{context}\n\nQuestion: {query}"
-    )
+
+    input_text = f"""
+Context:
+{context}
+
+Conversation:
+{history_text}
+
+Question:
+{query}
+"""
+
+    client = _get_client()
 
     t0 = time.perf_counter()
-    prompt_tokens = completion_tokens = total_tokens = 0
+
+    prompt_tokens = 0
+    completion_tokens = 0
+    total_tokens = 0
 
     try:
-        stream = await _get_client().responses.create(
+
+        stream = await client.responses.create(
             model=settings.openai_chat_model,
-            instructions=CHAT_SYSTEM_PROMPT,
+            instructions=SYSTEM_PROMPT,
             input=input_text,
-            max_output_tokens=2000,
+            temperature=0,
+            max_output_tokens=500,
             stream=True,
         )
+
         async for event in stream:
-            etype = getattr(event, "type", "")
-            if etype == "response.output_text.delta":
+
+            event_type = getattr(event, "type", "")
+
+            if event_type == "response.output_text.delta":
+
                 delta = getattr(event, "delta", "")
+
                 if delta:
-                    yield _sse({"type": "token", "content": delta})
-            elif etype == "response.completed":
-                resp = getattr(event, "response", None)
-                if resp:
-                    usage = getattr(resp, "usage", None)
+
+                    yield _sse({
+                        "type": "token",
+                        "content": delta,
+                    })
+
+            elif event_type == "response.completed":
+
+                response = getattr(event, "response", None)
+
+                if response:
+
+                    usage = getattr(response, "usage", None)
+
                     if usage:
-                        prompt_tokens     = getattr(usage, "input_tokens",  0)
-                        completion_tokens = getattr(usage, "output_tokens", 0)
-                        total_tokens      = getattr(usage, "total_tokens",  prompt_tokens + completion_tokens)
+
+                        prompt_tokens = getattr(
+                            usage,
+                            "input_tokens",
+                            0,
+                        )
+
+                        completion_tokens = getattr(
+                            usage,
+                            "output_tokens",
+                            0,
+                        )
+
+                        total_tokens = getattr(
+                            usage,
+                            "total_tokens",
+                            prompt_tokens + completion_tokens,
+                        )
+
     except Exception as exc:
-        yield _sse({"type": "error", "message": str(exc)})
+
+        yield _sse({
+            "type": "error",
+            "message": str(exc),
+        })
+
         return
 
-    gen_ms = round((time.perf_counter() - t0) * 1000, 2)
+    generation_ms = round(
+        (time.perf_counter() - t0) * 1000,
+        2,
+    )
+
     yield _sse({
-        "type":                  "done",
-        "generation_latency_ms": gen_ms,
-        "total_latency_ms":      retrieval_ms + gen_ms,
+        "type": "done",
+        "generation_latency_ms": generation_ms,
+        "total_latency_ms": (
+            retrieval_ms + generation_ms
+        ),
         "tokens_used": {
-            "prompt":     prompt_tokens,
+            "prompt": prompt_tokens,
             "completion": completion_tokens,
-            "total":      total_tokens,
+            "total": total_tokens,
         },
     })
