@@ -125,6 +125,8 @@ def _build_context(
             "index": i,
             "source": source,
             "location": location,
+            "score": chunk.get("score", 0.0),
+            "preview": chunk["text"].strip()[:120],
         })
 
     return "\n\n---\n\n".join(parts), citations
@@ -244,7 +246,6 @@ async def _generate_completion(
         model=settings.openai_chat_model,
         instructions=SYSTEM_PROMPT,
         input=input_text,
-        temperature=0,
         max_output_tokens=500,
     )
 
@@ -529,7 +530,6 @@ Question:
             model=settings.openai_chat_model,
             instructions=SYSTEM_PROMPT,
             input=input_text,
-            temperature=0,
             max_output_tokens=500,
             stream=True,
         )
@@ -679,7 +679,6 @@ Question:
             model=settings.openai_chat_model,
             instructions=SYSTEM_PROMPT,
             input=input_text,
-            temperature=0,
             max_output_tokens=500,
             stream=True,
         )

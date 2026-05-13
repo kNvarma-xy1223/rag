@@ -6,13 +6,24 @@ def fixed_ssl_context():
 
 ssl._create_default_https_context = fixed_ssl_context
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from api.routes import router
+from vectordb.pinecone_manager import pinecone_manager
 import uvicorn
 
-app = FastAPI(title="Enterprise RAG Platform", version="3.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Async startup: initialize Pinecone indexes before serving requests."""
+    await pinecone_manager._init_async()
+    yield
+
+
+app = FastAPI(title="Enterprise RAG Platform", version="3.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,7 +50,7 @@ HTML_UI = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enterprise RAG Platform</title>
+<title>Embedding Model Comparison</title>
 <style>
 :root {
   --bg:#f2f4f9;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#eef1f8;
@@ -304,9 +315,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <body>
 
 <header>
-  <span class="brand">Enterprise RAG Platform</span>
+  <span class="brand">Embedding Model Comparison</span>
   <div class="brand-sep"></div>
-  <span class="brand-meta">text-embedding-3-large &middot; embed-v-4-0 &middot; Pinecone &middot; gpt-5.4-pro</span>
+  <span class="brand-meta">text-embedding-3-large &middot; embed-v-4-0</span>
   <div class="hdr-space"></div>
   <div class="status-wrap">
     <span class="status-dot" id="sDot"></span>
@@ -354,7 +365,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <div class="card-body">
           <div class="stat-row"><span class="skey">PDF pipeline</span><span class="sval2">OCR &rarr; semantic chunk &rarr; embed &rarr; Pinecone</span></div>
           <div class="stat-row"><span class="skey">CSV pipeline</span><span class="sval2">Schema detect &rarr; row chunk &rarr; embed &rarr; metadata filter</span></div>
-          <div class="stat-row"><span class="skey">Chunker</span><span class="sval2">all-MiniLM-L6-v2 semantic breakpoints</span></div>
+          <div class="stat-row"><span class="skey">Chunker</span><span class="sval2">Semantic</span></div>
           <div class="stat-row"><span class="skey">Metadata</span><span class="sval2">Auto-extracted (numeric, date, categorical)</span></div>
         </div>
       </div>

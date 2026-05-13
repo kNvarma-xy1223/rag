@@ -149,7 +149,7 @@ async def ingest_document(
                 tmp_path = tmp.name
 
             yield _sse({"type": "progress", "percent": 15, "message": "Parsing document..."})
-            raw_docs = ingest_pdf(tmp_path) if suffix == ".pdf" else ingest_csv(tmp_path)
+            raw_docs = (await ingest_pdf(tmp_path)) if suffix == ".pdf" else (await ingest_csv(tmp_path))
             for doc in raw_docs:
                 doc["metadata"]["source"] = filename
 
@@ -163,7 +163,7 @@ async def ingest_document(
                 ),
             })
 
-            chunks = chunk_documents(raw_docs)
+            chunks = await chunk_documents(raw_docs)
             texts  = [c["text"] for c in chunks]
             results: dict = {}
 
@@ -187,7 +187,7 @@ async def ingest_document(
                     return
                 yield _sse({"type": "progress", "percent": 68, "message": "Indexing OpenAI vectors in Pinecone..."})
                 try:
-                    results["openai"] = pinecone_manager.upsert_chunks(
+                    results["openai"] = await pinecone_manager.upsert_chunks(
                         settings.pinecone_openai_index, chunks, embeddings
                     )
                 except Exception as ups_exc:
@@ -215,7 +215,7 @@ async def ingest_document(
                     return
                 yield _sse({"type": "progress", "percent": 92, "message": "Indexing Cohere vectors in Pinecone..."})
                 try:
-                    results["cohere"] = pinecone_manager.upsert_chunks(
+                    results["cohere"] = await pinecone_manager.upsert_chunks(
                         settings.pinecone_cohere_index, chunks, embeddings
                     )
                 except Exception as ups_exc:
@@ -527,8 +527,8 @@ async def ragas_benchmark(req: RagasBenchmarkRequest):
 @router.get("/api/collections")
 async def get_collections():
     return {
-        "openai": pinecone_manager.get_collection_info(settings.pinecone_openai_index),
-        "cohere": pinecone_manager.get_collection_info(settings.pinecone_cohere_index),
+        "openai": await pinecone_manager.get_collection_info(settings.pinecone_openai_index),
+        "cohere": await pinecone_manager.get_collection_info(settings.pinecone_cohere_index),
     }
 
 
@@ -537,9 +537,9 @@ async def clear_collection(model: str):
     if model not in ("openai", "cohere", "both"):
         raise HTTPException(400, "model must be 'openai', 'cohere', or 'both'")
     if model in ("openai", "both"):
-        pinecone_manager.reset_collection(settings.pinecone_openai_index, settings.openai_embedding_dim)
+        await pinecone_manager.reset_collection(settings.pinecone_openai_index, settings.openai_embedding_dim)
     if model in ("cohere", "both"):
-        pinecone_manager.reset_collection(settings.pinecone_cohere_index, settings.cohere_embedding_dim)
+        await pinecone_manager.reset_collection(settings.pinecone_cohere_index, settings.cohere_embedding_dim)
     return {"status": "cleared", "model": model}
 
 
@@ -554,7 +554,7 @@ async def health_check():
 
     # ── Pinecone ──────────────────────────────────────────────────────────────
     try:
-        info = pinecone_manager.get_collection_info(settings.pinecone_openai_index)
+        info = await pinecone_manager.get_collection_info(settings.pinecone_openai_index)
         report["pinecone"] = {"status": "ok", "openai_index_vectors": info["vectors_count"]}
     except Exception as exc:
         report["pinecone"] = {"status": "error", "detail": str(exc)}

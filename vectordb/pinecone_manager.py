@@ -1,3 +1,4 @@
+import asyncio
 import time
 from typing import Any, Dict, List, Optional
 
@@ -20,26 +21,31 @@ class PineconeManager:
 
     def __init__(self):
         self._pc = Pinecone(api_key=settings.pinecone_api_key)
-        self._ensure_indexes()
+
+    async def _init_async(self) -> "PineconeManager":
+        """Async-safe initialization of indexes. Call once after construction."""
+        await self._ensure_indexes()
+        return self
 
     # ── Collection lifecycle ──────────────────────────────────────────────────
 
-    def _existing_index_names(self) -> set:
-        return {idx.name for idx in self._pc.list_indexes()}
+    async def _existing_index_names(self) -> set:
+        return {idx.name for idx in await asyncio.to_thread(self._pc.list_indexes)}
 
-    def _get_index_dimension(self, index_name: str) -> Optional[int]:
+    async def _get_index_dimension(self, index_name: str) -> Optional[int]:
         """Return the dimension of an existing Pinecone index, or None on error."""
         try:
-            desc = self._pc.describe_index(index_name)
+            desc = await asyncio.to_thread(self._pc.describe_index, index_name)
             return desc.dimension
         except Exception as e:
             print(f"[Pinecone] Could not describe index '{index_name}': {e}")
             return None
 
-    def _create_index(self, index_name: str, dim: int) -> None:
+    async def _create_index(self, index_name: str, dim: int) -> None:
         """Create a new Pinecone serverless index and wait until it is ready."""
         print(f"[Pinecone] Creating index '{index_name}' with dim={dim} ...")
-        self._pc.create_index(
+        await asyncio.to_thread(
+            self._pc.create_index,
             name=index_name,
             dimension=dim,
             metric="cosine",
@@ -51,25 +57,25 @@ class PineconeManager:
         # Wait for the index to become ready (up to 60 s)
         for _ in range(30):
             try:
-                desc = self._pc.describe_index(index_name)
+                desc = await asyncio.to_thread(self._pc.describe_index, index_name)
                 if getattr(desc, "status", {}).get("ready", False):
                     break
             except Exception:
                 pass
-            time.sleep(2)
+            await asyncio.sleep(2)
         print(f"[Pinecone] Index '{index_name}' is ready.")
 
-    def _delete_and_wait(self, index_name: str) -> None:
+    async def _delete_and_wait(self, index_name: str) -> None:
         """Delete a Pinecone index and block until it is fully removed."""
         print(f"[Pinecone] Deleting index '{index_name}' ...")
-        self._pc.delete_index(index_name)
+        await asyncio.to_thread(self._pc.delete_index, index_name)
         for _ in range(30):
-            if index_name not in self._existing_index_names():
+            if index_name not in await self._existing_index_names():
                 break
-            time.sleep(2)
+            await asyncio.sleep(2)
         print(f"[Pinecone] Index '{index_name}' deleted.")
 
-    def _ensure_indexes(self) -> None:
+    async def _ensure_indexes(self) -> None:
         """
         Ensure both indexes exist with the correct dimensions.
 
@@ -83,35 +89,34 @@ class PineconeManager:
             (settings.pinecone_cohere_index, settings.cohere_embedding_dim),
         ]
 
-        existing = self._existing_index_names()
+        existing = await self._existing_index_names()
 
         for index_name, expected_dim in targets:
             if index_name not in existing:
-                self._create_index(index_name, expected_dim)
+                await self._create_index(index_name, expected_dim)
             else:
-                actual_dim = self._get_index_dimension(index_name)
+                actual_dim = await self._get_index_dimension(index_name)
                 if actual_dim is None:
-                    # Couldn't verify — skip to avoid destroying data accidentally
                     print(f"[Pinecone] WARNING: Could not verify dimension of '{index_name}'. Skipping.")
                 elif actual_dim != expected_dim:
                     print(
                         f"[Pinecone] Index '{index_name}' has dim={actual_dim} "
                         f"but expected dim={expected_dim}. Recreating..."
                     )
-                    self._delete_and_wait(index_name)
-                    self._create_index(index_name, expected_dim)
+                    await self._delete_and_wait(index_name)
+                    await self._create_index(index_name, expected_dim)
                 else:
                     print(f"[Pinecone] Index '{index_name}' OK (dim={actual_dim}).")
 
-    def reset_collection(self, index_name: str, vector_size: int) -> None:
+    async def reset_collection(self, index_name: str, vector_size: int) -> None:
         """Delete and recreate a Pinecone index (mirrors QdrantManager.reset_collection)."""
-        if index_name in self._existing_index_names():
-            self._delete_and_wait(index_name)
-        self._create_index(index_name, vector_size)
+        if index_name in await self._existing_index_names():
+            await self._delete_and_wait(index_name)
+        await self._create_index(index_name, vector_size)
 
     # ── Write ─────────────────────────────────────────────────────────────────
 
-    def upsert_chunks(
+    async def upsert_chunks(
         self,
         index_name: str,
         chunks: List[Dict[str, Any]],
@@ -149,13 +154,13 @@ class PineconeManager:
 
         # Pinecone recommends upsert batches of ≤ 100 vectors
         for i in range(0, len(vectors), 100):
-            index.upsert(vectors=vectors[i: i + 100])
+            await asyncio.to_thread(index.upsert, vectors=vectors[i: i + 100])
 
         return len(vectors)
 
     # ── Read ──────────────────────────────────────────────────────────────────
 
-    def search(
+    async def search(
         self,
         index_name: str,
         query_vector: List[float],
@@ -171,7 +176,8 @@ class PineconeManager:
         # {"key": "value"} as an implicit $eq match.
         pinecone_filter = filters if filters else None
 
-        response = index.query(
+        response = await asyncio.to_thread(
+            index.query,
             vector=query_vector,
             top_k=top_k,
             filter=pinecone_filter,
@@ -196,11 +202,11 @@ class PineconeManager:
 
     # ── Info ──────────────────────────────────────────────────────────────────
 
-    def get_collection_info(self, index_name: str) -> Dict[str, Any]:
+    async def get_collection_info(self, index_name: str) -> Dict[str, Any]:
         """Mirror QdrantManager.get_collection_info for drop-in compatibility."""
         try:
             index = self._pc.Index(index_name)
-            stats = index.describe_index_stats()
+            stats = await asyncio.to_thread(index.describe_index_stats)
             total = stats.total_vector_count or 0
             return {
                 "name": index_name,

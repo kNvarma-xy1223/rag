@@ -97,7 +97,7 @@ async def retrieve(
     )
 
     fallback_used = False
-    results = pinecone_manager.search(
+    results = await pinecone_manager.search(
         index_name=index_name,
         query_vector=query_vector,
         top_k=top_k,
@@ -107,7 +107,7 @@ async def retrieve(
 
     # Fallback: filtered search returned nothing → retry semantic-only
     if not results and filters:
-        results = pinecone_manager.search(
+        results = await pinecone_manager.search(
             index_name=index_name,
             query_vector=query_vector,
             top_k=top_k,

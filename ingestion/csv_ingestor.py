@@ -18,6 +18,7 @@ Design principles:
   - Language auto-detected; stored as metadata for language filtering.
 """
 
+import asyncio
 import re
 import warnings
 from pathlib import Path
@@ -205,14 +206,10 @@ def _build_row_text(
 
 # ── Main ingestion ─────────────────────────────────────────────────────────────
 
-def ingest_csv(file_path: str) -> List[Dict[str, Any]]:
+def _ingest_csv_sync(file_path: str) -> List[Dict[str, Any]]:
     """
+    Synchronous CSV ingestion.
     Returns a flat list of documents (one per row + one summary).
-
-    Each row document carries chunk_index=0 so semantic_chunker.semantic_chunk()
-    returns it immediately as a single-element list without any splitting or
-    merging. This is critical: merging rows destroys per-row numeric metadata
-    and breaks Pinecone metadata filters.
     """
     df = pd.read_csv(file_path)
     source_name = Path(file_path).name
@@ -318,3 +315,10 @@ def ingest_csv(file_path: str) -> List[Dict[str, Any]]:
         })
 
     return documents
+
+
+async def ingest_csv(file_path: str) -> List[Dict[str, Any]]:
+    """
+    Async CSV ingestion (offloads pandas/DataFrame work to a thread).
+    """
+    return await asyncio.to_thread(_ingest_csv_sync, file_path)

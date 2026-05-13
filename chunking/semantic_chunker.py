@@ -14,6 +14,7 @@ For all other documents (PDF pages, free-text notes):
   falling back to a TF-IDF statistical chunker otherwise.
 """
 
+import asyncio
 import re
 import math
 import numpy as np
@@ -123,7 +124,7 @@ def _is_csv_row(metadata: Dict[str, Any]) -> bool:
     )
 
 
-def semantic_chunk(
+async def semantic_chunk(
     text: str,
     metadata: Dict[str, Any],
     breakpoint_threshold: float = 0.45,
@@ -148,8 +149,12 @@ def semantic_chunk(
     model = _get_model()
 
     if model is not None:
-        embeddings = model.encode(
-            sentences, batch_size=64, show_progress_bar=False, normalize_embeddings=True
+        embeddings = await asyncio.to_thread(
+            model.encode,
+            sentences,
+            batch_size=64,
+            show_progress_bar=False,
+            normalize_embeddings=True,
         )
         breakpoints = [0]
         for i in range(len(embeddings) - 1):
@@ -182,7 +187,7 @@ def semantic_chunk(
     ] or [{"text": text.strip(), "metadata": {**metadata, "chunk_index": 0}}]
 
 
-def chunk_documents(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+async def chunk_documents(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Process a list of raw documents.
 
@@ -191,5 +196,5 @@ def chunk_documents(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     all_chunks = []
     for doc in documents:
-        all_chunks.extend(semantic_chunk(doc["text"], doc["metadata"]))
+        all_chunks.extend(await semantic_chunk(doc["text"], doc["metadata"]))
     return all_chunks

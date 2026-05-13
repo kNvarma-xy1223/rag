@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 from typing import List, Dict, Any
 import fitz  # pymupdf
@@ -11,8 +12,8 @@ def _detect_language(text: str) -> str:
     return "es" if len(words & _SPANISH_MARKERS) >= 4 else "en"
 
 
-def ingest_pdf(file_path: str) -> List[Dict[str, Any]]:
-    """Extract pages from PDF with metadata."""
+def _extract_pdf_pages(file_path: str) -> List[Dict[str, Any]]:
+    """Synchronous helper for extracting PDF pages."""
     doc = fitz.open(file_path)
     source_name = Path(file_path).name
     documents: List[Dict[str, Any]] = []
@@ -35,3 +36,8 @@ def ingest_pdf(file_path: str) -> List[Dict[str, Any]]:
 
     doc.close()
     return documents
+
+
+async def ingest_pdf(file_path: str) -> List[Dict[str, Any]]:
+    """Extract pages from PDF with metadata (async wrapper)."""
+    return await asyncio.to_thread(_extract_pdf_pages, file_path)
