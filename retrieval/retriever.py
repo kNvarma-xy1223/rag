@@ -1,3 +1,13 @@
+"""
+retrieval/retriever.py
+
+Core retrieval with:
+  - Proper Pinecone candidate pool sizing
+  - Score threshold disabled when metadata filters are active
+    (CSV row chunks have low cosine scores 0.18-0.28; threshold would drop them)
+  - Fallback to semantic-only search if filtered search returns nothing
+"""
+
 import time
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
@@ -22,14 +32,19 @@ def _pool_k(final_k: int) -> int:
     """
     Compute the Pinecone candidate pool size from the desired final_k.
 
-    Scale: final_k × 10, clamped to [20, 500].
-      K=5  → pool=50    (enough headroom for metadata + score filtering)
-      K=10 → pool=100
-      K=50 → pool=500   (Pinecone soft limit; hard limit is 10 000)
+    For CSV datasets with metadata filters we need a large enough pool so
+    that all matching rows are candidates before post-filtering trims to final_k.
 
-    Floor of 20 ensures single-result queries still get real candidates.
+    Scale: final_k × 100, clamped to [50, 10000].
+      K=5   → pool=500    (covers datasets up to ~500 matching rows)
+      K=10  → pool=1000
+      K=100 → pool=10000  (Pinecone hard limit)
+
+    This is intentionally generous: Pinecone's metadata filter is the real
+    precision gate, and the pool is fetched in one round-trip so there's no
+    latency cost from a larger pool vs a smaller one.
     """
-    return max(20, min(final_k * 10, 500))
+    return max(50, min(final_k * 100, 10_000))
 
 
 async def retrieve(
@@ -40,31 +55,21 @@ async def retrieve(
     score_threshold: float = 0.0,
 ) -> Dict[str, Any]:
     """
-    Core retrieval function.
+    Core retrieval.
 
-    score_threshold behaviour (critical fix):
-      • When metadata filters are supplied, score_threshold is forced to 0.0
-        for the filtered search.  CSV row chunks have low semantic similarity
-        scores (0.18–0.28) that fall below the default 0.3 threshold even
-        though they are the EXACT records the filter is looking for.
-        Pinecone's metadata filter is already the precision gate — adding a
-        score threshold on top silently drops matching records and triggers
-        the fallback, returning completely unrelated chunks to the LLM.
-      • When no filters are supplied (pure semantic search), the caller-
-        supplied score_threshold (or settings.similarity_threshold) applies
-        normally.
+    score_threshold behaviour:
+      When metadata filters are supplied, score_threshold is forced to 0.0.
+      CSV row chunks have low cosine scores (0.18-0.28) that fall below the
+      default threshold even though they are exactly the records we want.
+      Pinecone's metadata filter is the precision gate — the score threshold
+      would silently drop matching records and trigger the fallback.
 
     fallback behaviour:
-      If the filtered search returns 0 results we retry without filters so
-      the LLM always has context to work with.  filter_fallback=True is set
-      so callers (routes, generator) can surface this information.
+      If the filtered search returns 0 results we retry without filters.
+      filter_fallback=True is set so callers can surface a caveat to the user.
     """
     top_k = top_k or settings.top_k
 
-    # Guard: "both" is only valid for compare_retrievals().
-    # If it reaches here the caller has a bug — raise immediately so the stack
-    # trace points at the real site rather than silently falling through to
-    # Cohere and returning confusing results.
     if embedding_model not in ("openai", "cohere"):
         raise ValueError(
             f"retrieve() received embedding_model={embedding_model!r}. "
@@ -85,12 +90,8 @@ async def retrieve(
 
     query_vector = vectors[0]
 
-    # ── Primary search ────────────────────────────────────────────────────────
-    # When filters are active, disable the score threshold: Pinecone's metadata
-    # filter is the precision gate. Applying score_threshold here would silently
-    # drop CSV row records whose cosine scores (0.18–0.28) fall below the
-    # default 0.3 threshold, causing the fallback to fire and returning wrong
-    # chunks to the LLM.
+    # When filters are active: disable score threshold entirely.
+    # When no filters: apply caller-supplied threshold (default from settings).
     primary_threshold = 0.0 if filters else (
         score_threshold if score_threshold != 0.0 else settings.similarity_threshold
     )
@@ -104,10 +105,7 @@ async def retrieve(
         score_threshold=primary_threshold,
     )
 
-    # ── Fallback: filtered search returned nothing ────────────────────────────
-    # Retry semantic-only so the LLM always has context.
-    # score_threshold=0.0 intentionally: don't let the threshold swallow the
-    # fallback results; the LLM will caveat based on filter_fallback=True.
+    # Fallback: filtered search returned nothing → retry semantic-only
     if not results and filters:
         results = pinecone_manager.search(
             index_name=index_name,
@@ -121,12 +119,12 @@ async def retrieve(
     latency_ms = round((time.perf_counter() - t0) * 1000, 2)
 
     return {
-        "query":          query,
+        "query":           query,
         "embedding_model": embedding_model,
-        "results":        results,
-        "latency_ms":     latency_ms,
-        "top_k":          top_k,
-        "total_found":    len(results),
+        "results":         results,
+        "latency_ms":      latency_ms,
+        "top_k":           top_k,
+        "total_found":     len(results),
         "filter_fallback": fallback_used,
     }
 

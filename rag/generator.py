@@ -2,8 +2,8 @@
 rag/generator.py
 
 RAG response generation via Azure OpenAI Responses API.
-Non-streaming variants are used by RAGAS evaluation.
-Streaming variants are consumed directly by FastAPI StreamingResponse.
+Non-streaming variants used by RAGAS evaluation.
+Streaming variants consumed by FastAPI StreamingResponse.
 """
 
 import json
@@ -44,14 +44,15 @@ SYSTEM_PROMPT = """You are an enterprise-grade multilingual RAG assistant.
 Strict rules:
 1. Ground every statement exclusively in the numbered context blocks below.
 2. Cite every factual claim inline using [N] where N is the context block number.
-3. Reproduce numerical values, percentages, dates, and KPIs exactly as they appear.
+3. Reproduce numerical values, percentages, dates, and KPIs exactly as they appear in context.
 4. Deliver a thorough, well-structured response of at least 6-8 sentences.
 5. FORMAT YOUR ENTIRE RESPONSE IN MARKDOWN:
    - Use ## or ### headings for major sections
    - Use **bold** for key terms and important figures
    - Use bullet lists (-) or numbered lists for items/metrics/steps
-   - Use tables for comparisons when context supports it
-6. Synthesize across multiple context blocks into a coherent narrative.
+   - Use tables for comparisons or listing multiple records
+6. When listing employees or records, include ALL records from the context that match.
+   Do NOT omit or summarise — list every matching record explicitly.
 7. State clearly what is and isn't covered by the context.
 8. Respond in the same language as the question (English or Spanish).
 9. Never invent figures, names, or conclusions not in the context.
@@ -66,13 +67,16 @@ Strict rules:
 4. Deliver a thorough, well-structured response of at least 6-8 sentences.
 5. FORMAT YOUR ENTIRE RESPONSE IN MARKDOWN:
    - Use ## or ### headings for major sections
-   - Use **bold** for key terms and important figures  
+   - Use **bold** for key terms and important figures
    - Use bullet lists or numbered lists for items/metrics
-   - Use tables for comparisons
-6. Maintain a professional yet conversational tone.
-7. Respond in the same language as the question (English or Spanish).
-8. Never invent figures, names, or conclusions not in the context.
+   - Use tables for comparisons or listing multiple records
+6. When listing employees or records, include ALL records from the context that match.
+   Do NOT omit or summarise — list every matching record explicitly.
+7. Maintain a professional yet conversational tone.
+8. Respond in the same language as the question (English or Spanish).
+9. Never invent figures, names, or conclusions not in the context.
 """
+
 
 # ── Context builder ───────────────────────────────────────────────────────────
 
@@ -84,10 +88,12 @@ def _build_context(chunks: List[Dict[str, Any]]) -> tuple[str, List[Dict[str, An
         meta   = chunk["metadata"]
         source = meta.get("source", "unknown")
 
+        # Determine location label
         if "page" in meta:
             location = f"page {meta['page']}"
-        elif "row_start" in meta:
-            location = f"rows {meta['row_start']}-{meta['row_end']}"
+        elif meta.get("doc_type") == "row":
+            row_num = meta.get("row_number", "?")
+            location = f"row {row_num}"
         elif meta.get("doc_type") == "summary":
             location = "summary"
         else:
@@ -106,7 +112,7 @@ def _build_context(chunks: List[Dict[str, Any]]) -> tuple[str, List[Dict[str, An
     return "\n\n---\n\n".join(parts), citations
 
 
-# ── helpers ───────────────────────────────────────────────────────────────────
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _format_history(history: List[Dict[str, str]]) -> str:
     lines = []
@@ -124,23 +130,15 @@ async def _fetch_chunks(
     final_k: Optional[int] = None,
 ) -> tuple[List[Dict[str, Any]], float, bool]:
     """
-    Shared retrieve → post-filter → trim helper used by all four generators.
+    Retrieve → post-filter → trim.
 
-    Pool sizing (fix for DeepEval path):
-      Previously callers passed top_k directly here — routes sent 500 (correct
-      but wasteful), deepeval sent 5 (too small, missed candidates).
-      Now pool_k is always computed from final_k via _pool_k(), so every code
-      path (streaming, non-streaming, DeepEval) gets proper candidate pooling:
-        final_k=5  → pool_k=50
-        final_k=10 → pool_k=100
+    Pool sizing: final_k × 100 (see retriever._pool_k).
+    This ensures all matching CSV rows are candidates before trimming to final_k.
 
     Fallback chain:
-      1. Pinecone with metadata filters (score_threshold disabled — see retriever.py)
-      2. Pinecone semantic-only if filtered search returns 0 results (in retriever.py)
-      3. If numeric post_filters wipe everything → use unfiltered semantic results
-         so the LLM always has context.
-
-    Returns: (chunks, retrieval_latency_ms, filter_fallback_used)
+      1. Pinecone with metadata filters (score threshold disabled for filtered queries)
+      2. Pinecone semantic-only if filtered search returns 0 results
+      3. If numeric post_filters wipe everything → keep semantic results
     """
     effective_final_k = final_k if final_k is not None else settings.top_k
     pool_k = _pool_k(effective_final_k)
@@ -150,11 +148,9 @@ async def _fetch_chunks(
 
     if post_filters:
         filtered = apply_post_filters(chunks, post_filters)
-        # Fallback: post_filters wiped all results → keep semantic results so
-        # the LLM can still answer (it will caveat appropriately).
+        # If post-filters wiped everything, keep original results so LLM can caveat
         chunks = filtered if filtered else chunks
 
-    # Trim to what the LLM should actually see
     chunks = chunks[:effective_final_k]
 
     return chunks, retrieval["latency_ms"], retrieval["filter_fallback"]
@@ -168,9 +164,7 @@ async def generate_response(
     filters: Optional[Dict[str, Any]] = None,
     post_filters: Optional[List[NumericCondition]] = None,
     final_k: Optional[int] = None,
-    # Legacy positional arg (top_k) kept for backwards compat — ignored,
-    # pool is now computed internally from final_k via _pool_k().
-    top_k: Optional[int] = None,
+    top_k: Optional[int] = None,  # legacy compat, ignored
 ) -> Dict[str, Any]:
     chunks, retrieval_ms, filter_fallback = await _fetch_chunks(
         query, embedding_model, filters, post_filters, final_k
@@ -195,7 +189,7 @@ async def generate_response(
         model=settings.openai_chat_model,
         instructions=SYSTEM_PROMPT,
         input=f"Context:\n{context}\n\nQuestion: {query}",
-        max_output_tokens=1800,
+        max_output_tokens=2000,
     )
     gen_ms = round((time.perf_counter() - t0) * 1000, 2)
 
@@ -262,7 +256,7 @@ async def generate_chat_response(
         model=settings.openai_chat_model,
         instructions=CHAT_SYSTEM_PROMPT,
         input=input_text,
-        max_output_tokens=1800,
+        max_output_tokens=2000,
     )
     gen_ms = round((time.perf_counter() - t0) * 1000, 2)
 
@@ -302,7 +296,7 @@ async def stream_generate_response(
     """
     SSE event sequence:
       {"type":"citations", "citations":[...], "retrieval_latency_ms": N, "filter_fallback": bool}
-      {"type":"token",     "content": "..."}  x many
+      {"type":"token",     "content": "..."}  × many
       {"type":"done",      "generation_latency_ms": N, "tokens_used": {...}}
       {"type":"error",     "message": "..."}
     """
@@ -321,8 +315,6 @@ async def stream_generate_response(
         "citations":            citations,
         "retrieval_latency_ms": retrieval_ms,
         "embedding_model":      embedding_model,
-        # Surface fallback so the UI can show a caveat banner when filters
-        # found nothing and we fell back to semantic-only results.
         "filter_fallback":      filter_fallback,
     })
 
@@ -334,7 +326,7 @@ async def stream_generate_response(
             model=settings.openai_chat_model,
             instructions=SYSTEM_PROMPT,
             input=f"Context:\n{context}\n\nQuestion: {query}",
-            max_output_tokens=1800,
+            max_output_tokens=2000,
             stream=True,
         )
         async for event in stream:
@@ -411,7 +403,7 @@ async def stream_generate_chat_response(
             model=settings.openai_chat_model,
             instructions=CHAT_SYSTEM_PROMPT,
             input=input_text,
-            max_output_tokens=1800,
+            max_output_tokens=2000,
             stream=True,
         )
         async for event in stream:

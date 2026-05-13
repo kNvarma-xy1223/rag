@@ -1,3 +1,19 @@
+"""
+chunking/semantic_chunker.py
+
+Semantic chunking for free-text documents (PDFs, notes, etc.).
+
+CSV ROW BYPASS:
+  Documents with doc_type="row" or chunk_index=0 AND source_type="csv" are
+  returned as-is without any splitting or merging. Merging CSV rows destroys
+  per-row numeric metadata, which breaks Pinecone metadata filters ($gte, $eq).
+  Each CSV row must remain its own atomic vector.
+
+For all other documents (PDF pages, free-text notes):
+  Uses sentence-transformer embeddings (all-MiniLM-L6-v2) when available,
+  falling back to a TF-IDF statistical chunker otherwise.
+"""
+
 import re
 import math
 import numpy as np
@@ -67,7 +83,7 @@ def _statistical_chunk(sentences, min_chars, max_chars, threshold=0.05):
     window = 2
     breakpoints = [0]
     for i in range(window, len(sentences) - window):
-        left = " ".join(sentences[max(0, i - window): i])
+        left  = " ".join(sentences[max(0, i - window): i])
         right = " ".join(sentences[i: i + window])
         if _tfidf_similarity(left, right) < threshold:
             breakpoints.append(i)
@@ -92,6 +108,21 @@ def _statistical_chunk(sentences, min_chars, max_chars, threshold=0.05):
     return [c for c in final if c.strip()] or [" ".join(sentences)]
 
 
+def _is_csv_row(metadata: Dict[str, Any]) -> bool:
+    """
+    Returns True if this document is an individual CSV row that must not be
+    split or merged with other documents.
+
+    Criteria (any one is sufficient):
+      - doc_type == "row"            (set by csv_ingestor for every row doc)
+      - source_type == "csv"         (all CSV documents including summary)
+    """
+    return (
+        metadata.get("doc_type") == "row"
+        or metadata.get("source_type") == "csv"
+    )
+
+
 def semantic_chunk(
     text: str,
     metadata: Dict[str, Any],
@@ -99,8 +130,18 @@ def semantic_chunk(
     min_chars: int = 120,
     max_chars: int = 800,
 ) -> List[Dict[str, Any]]:
-    sentences = _split_sentences(text)
+    """
+    Chunk a single document.
 
+    CSV rows and summary docs are returned as-is (single-element list).
+    All other documents are semantically chunked.
+    """
+    # CSV documents: return immediately without any splitting
+    if _is_csv_row(metadata):
+        return [{"text": text.strip(), "metadata": {**metadata, "chunk_index": 0}}]
+
+    # Short texts: no benefit from chunking
+    sentences = _split_sentences(text)
     if len(sentences) <= 2 or len(text) < min_chars:
         return [{"text": text.strip(), "metadata": {**metadata, "chunk_index": 0}}]
 
@@ -142,6 +183,12 @@ def semantic_chunk(
 
 
 def chunk_documents(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Process a list of raw documents.
+
+    CSV row documents pass through untouched (one-in, one-out).
+    PDF pages and other free-text documents are semantically chunked.
+    """
     all_chunks = []
     for doc in documents:
         all_chunks.extend(semantic_chunk(doc["text"], doc["metadata"]))
